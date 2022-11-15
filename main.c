@@ -22,6 +22,8 @@ int main( int argv, char* argc[] ){
 
     load( database );
 
+    fclose( database );
+
     while( true ){
         //TODO implement this while loop as the UI of this program
         break;
