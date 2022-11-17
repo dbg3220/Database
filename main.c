@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "student.h"
+
 #define USAGE "Usage: ./main <database_file>\n"
 
 /// @brief reads the student entries from the database into memory
