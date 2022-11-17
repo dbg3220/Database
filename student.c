@@ -40,3 +40,51 @@ void student_destroy( Student student ){
 	free( student );
 }
 
+char* student_getName( Student student ){
+	return &(student->name[0]);
+}
+
+char* student_getEmail( Student student ){
+	return &(student->email[0]);
+}
+
+int student_getAge( Student student ){
+	return (int) student->age;
+}
+
+double student_getGPA( Student student ){
+	return student->gpa;
+}
+
+bool student_setName( Student student, char* name ){
+	if( strlen( name ) > MAX_NAME_LENGTH ){
+		return false;
+	}
+	strcpy( student->name, name );
+	return true;
+}
+
+bool student_setEmail( Student student, char* email ){
+	if( strlen( email ) > MAX_EMAIL_LENGTH ){
+		return false;
+	}
+	strcpy( student->email, email );
+	return true;
+}
+
+bool student_setAge( Student student, int age ){
+	if( age < MIN_AGE ){
+		return false;
+	}
+	student->age = age;
+	return true;
+}
+
+bool student_setGPA( Student student, double gpa ){
+	if( gpa < MIN_GPA || gpa > MAX_GPA ){
+		return false;
+	}
+	student->gpa = gpa;
+	return true;
+}
+

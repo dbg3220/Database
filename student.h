@@ -80,7 +80,7 @@ bool student_setEmail( Student student, char* email );
 /// @param age The new age of this student
 /// @return true if the student's age was successfully updated, false
 /// if the parameter was invalid
-bool student_setAge( Student student );
+bool student_setAge( Student student, int age );
 
 /// Sets the gpa of this student
 ///
@@ -88,5 +88,5 @@ bool student_setAge( Student student );
 /// @param gpa The new gpa of this student
 /// @return true if the student's age was successfully updated, false
 /// if the parameter was invalid
-bool student_set_GPA( Student student );
+bool student_setGPA( Student student, double gpa );
 
