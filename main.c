@@ -5,30 +5,27 @@
 #include <stdbool.h>
 
 #include "student.h"
+#include "database.h"
+#include "ListADT.h"
 
 #define USAGE "Usage: ./main <database_file>\n"
 
-/// @brief reads the student entries from the database into memory
-/// @param data the input stream representing the database
-void load( FILE * data ){}
-
 /// @brief main function of this program
-/// @return EXIT_FAILURE if user failed to initiate program with correct commands, EXIT_SUCCESS otherwise
+/// @return EXIT_SUCCESS upon successful completion of this program,
+/// EXIT_FAILURE otherwise
 int main( int argv, char* argc[] ){
     if(argv != 2){
         printf(USAGE);
         return EXIT_FAILURE;
     } 
 
-    FILE * database = fopen( argc[1], "rw" );
+    //load database with filename(argc[1])
 
-    load( database );
-
-    fclose( database );
-
+	//continuous while loop for command input by user
     while( true ){
         //TODO implement this while loop as the UI of this program
-        break;
+
+        break;//break when user inputs an exiting command
     }
 
     //ONLY RETURN ON SUCCESSFUL COMPLETION OF THIS PROGRAM
