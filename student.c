@@ -88,3 +88,13 @@ bool student_setGPA( Student student, double gpa ){
 	return true;
 }
 
+bool student_equals( Student s1, Student s2 ){
+	char* name1 = s1->name;
+	char* name2 = s2->name;
+	char* email1 = s1->email;
+	char* email2 = s2->email;
+	return ( strcmp( name1, name2 ) == 0 ) &&
+		   ( strcmp( email1, email2 ) == 0 ) &&
+		   ( s1->age == s2->age ) &&
+		   ( s1->gpa == s2->gpa );
+}

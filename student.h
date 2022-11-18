@@ -90,3 +90,16 @@ bool student_setAge( Student student, int age );
 /// if the parameter was invalid
 bool student_setGPA( Student student, double gpa );
 
+/// Equals method for comparing two students, assumes the two
+/// pointers provided are valid Student objects
+///
+/// @param s1 The first student to compare
+/// @param s2 The second student to compare
+/// @return true if s1 and s2 hold the same valuee, false otherwise
+bool student_equals( Student s1, Student s2 );
+
+/// toString method for displaying a student as a string
+///
+/// @param student The student to create a string of
+/// @return A valid C string representing the student
+char* student_toString( Student student );
