@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "student.h"
 #include "database.h"
@@ -14,11 +15,12 @@
 /// @return EXIT_SUCCESS upon successful completion of this program,
 /// EXIT_FAILURE otherwise
 int main( int argv, char* argc[] ){
-    if(argv != 2){
+    if( argv != 2 || strcmp( argc[1], "-h" ) == 0 ){
         printf(USAGE);
         return EXIT_FAILURE;
     } 
 
+	printf( "Loading data from: %s\n", argc[1] );
     //load database with filename(argc[1])
 
 	//continuous while loop for command input by user
