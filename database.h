@@ -6,7 +6,7 @@
 
 #include "ListADT.h"
 
- #ifndef _DATABASE_
+#ifndef _DATABASE_
 
 typedef struct { } * Database;
 
