@@ -13,10 +13,10 @@
 #define MAX_GPA          4
 
 typedef struct Student_H {
+	double gpa;
+	short age;
 	char name[MAX_NAME_LENGTH + 1];
 	char email[MAX_EMAIL_LENGTH + 1];
-	short age;
-	double gpa;
 } * Student;
 
 #define _STUDENT_
