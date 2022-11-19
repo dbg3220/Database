@@ -5,10 +5,10 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include "student.h"
 #include "ListADT.h"
+#include "database.h"
 
-int main(){
+static void testStudent(){
     Student student = student_create( "Damon", "dbg3220@rit.edu", 19, 3.74 );
     char* str = student_toString( student );
     printf( "%s\n", str );
@@ -26,4 +26,20 @@ int main(){
         printf( "TEST FAILED\n");
         return EXIT_FAILURE;
     }
+}
+
+static void testDatabase(){
+	char* file = "data.csv";
+	printf( "Testing database functionality with file <%s>\n", file );
+	Database database = database_create( file );
+	if( database ){
+		printf( "TEST PASSED\n" );
+	} else {
+		printf( "TEST FAILED\n" );
+		return EXIT_FAILURE;
+	}
+}
+
+int main(){
+	testDatabase();	
 }

@@ -5,7 +5,6 @@
 #include <stdbool.h>
 #include <string.h>
 
-#include "student.h"
 #include "database.h"
 #include "ListADT.h"
 
