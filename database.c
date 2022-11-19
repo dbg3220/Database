@@ -20,8 +20,8 @@ typedef struct Database_H {
 
 Database database_create( char* file ){
     Database database = (Database)malloc( sizeof( struct Database_H ) );
-    database->file = (char*)malloc( strlen( file ) * sizeof( char ) );
-    database->students = list_create( NULL, NULL );//implement equals and tostring methods in student
+    database->file = file;
+    database->students = list_create( student_equals, student_toString );//implement equals and tostring methods in student
     //TODO write code to read the file into students(ListADT)
     return database;
 }

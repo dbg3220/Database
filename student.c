@@ -4,6 +4,7 @@
 //
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
 #define MAX_NAME_LENGTH  50
@@ -88,7 +89,9 @@ bool student_setGPA( Student student, double gpa ){
 	return true;
 }
 
-bool student_equals( Student s1, Student s2 ){
+bool student_equals( const void * a, const void * b ){
+	Student s1 = (Student) a;
+	Student s2 = (Student) b;
 	char* name1 = s1->name;
 	char* name2 = s2->name;
 	char* email1 = s1->email;
@@ -97,4 +100,14 @@ bool student_equals( Student s1, Student s2 ){
 		   ( strcmp( email1, email2 ) == 0 ) &&
 		   ( s1->age == s2->age ) &&
 		   ( s1->gpa == s2->gpa );
+}
+
+char* student_toString( const void * a ){
+	Student student = (Student) a;
+	char* str;
+	int length = strlen( student->name ) + strlen( student->email ) + 40;
+	str = (char*)malloc( sizeof( char ) * length );
+	sprintf( str, "[name: %s, email: %s, age: %d, gpa: %.3f]", student->name, 
+				student->email, student->age, student->gpa );
+	return str;
 }

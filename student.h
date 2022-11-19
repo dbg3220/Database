@@ -96,10 +96,11 @@ bool student_setGPA( Student student, double gpa );
 /// @param s1 The first student to compare
 /// @param s2 The second student to compare
 /// @return true if s1 and s2 hold the same valuee, false otherwise
-bool student_equals( Student s1, Student s2 );
+bool student_equals( const void * a, const void * b );
 
 /// toString method for displaying a student as a string
 ///
 /// @param student The student to create a string of
-/// @return A valid C string representing the student
-char* student_toString( Student student );
+/// @return A valid C string representing the student, when not in use
+/// must be freed from memory by client
+char* student_toString( const void * a );

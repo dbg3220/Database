@@ -25,7 +25,9 @@ Database database_create( char* file );
 void database_exit( Database database );
 
 /// Retrieves the entire database as a ListADT of student
-/// objects
+/// objects. The ListADT that is returned must NOT be destroyed
+/// by the client because it is a pointer to the ListADT contained
+/// within the database.
 ///
 /// @param database The database to be analyzed
 /// @return The whole database
