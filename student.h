@@ -58,6 +58,8 @@ int student_getAge( Student student );
 /// @return This student's gpa as a double
 double student_getGPA( Student student );
 
+#ifdef _SOURCE_
+
 /// Sets the name of this student
 ///
 /// @param student The student to be manipulated
@@ -89,6 +91,8 @@ bool student_setAge( Student student, int age );
 /// @return true if the student's age was successfully updated, false
 /// if the parameter was invalid
 bool student_setGPA( Student student, double gpa );
+
+#endif
 
 /// Equals method for comparing two students, assumes the two
 /// pointers provided are valid Student objects

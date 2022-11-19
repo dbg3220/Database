@@ -21,6 +21,7 @@ typedef struct Student_H {
 } * Student;
 
 #define _STUDENT_
+#define _SOURCE_
 #include "student.h"
 
 Student student_create( char* name, char* email, int age, double gpa ){

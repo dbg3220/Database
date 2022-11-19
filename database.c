@@ -15,6 +15,7 @@ typedef struct Database_H {
 } * Database;
 
 #define _DATABASE_
+#define _SOURCE_
 #include "database.h"
 
 /// Loads the database from the file specified
