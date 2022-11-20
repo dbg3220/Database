@@ -8,7 +8,7 @@
 #include "ListADT.h"
 #include "database.h"
 
-static void testStudent(){
+static int testStudent(){
     Student student = student_create( "Damon", "dbg3220@rit.edu", 19, 3.74 );
     char* str = student_toString( student );
     printf( "%s\n", str );
@@ -28,7 +28,7 @@ static void testStudent(){
     }
 }
 
-static void testDatabase(){
+static int testDatabase(){
 	char* file = "data.csv";
 	printf( "Testing database functionality with file <%s>\n", file );
 	Database database = database_create( file );

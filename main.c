@@ -15,20 +15,22 @@
 /// EXIT_FAILURE otherwise
 int main( int argv, char* argc[] ){
     if( argv != 2 || strcmp( argc[1], "-h" ) == 0 ){
-        printf(USAGE);
+        printf( USAGE );
         return EXIT_FAILURE;
     } 
 
 	printf( "Loading data from: %s\n", argc[1] );
-    //load database with filename(argc[1])
+    Database database = database_create( argc[1] );
+    printf( "\r                                  ");
 
-	//continuous while loop for command input by user
+    char input[50];
     while( true ){
-        //TODO implement this while loop as the UI of this program
+        scanf( " ->%s", input );
 
-        break;//break when user inputs an exiting command
+        if( strcmp( input, "quit" ) == 0 ){
+            break;
+        }
     }
 
-    //ONLY RETURN ON SUCCESSFUL COMPLETION OF THIS PROGRAM
     return EXIT_SUCCESS;
 }
