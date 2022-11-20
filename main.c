@@ -6,7 +6,6 @@
 #include <string.h>
 
 #include "database.h"
-#include "ListADT.h"
 
 #define USAGE       "Usage: ./main <database_file>"
 #define ERROR       "Command Not Found, type 'help' to see a list of relevant commands"
@@ -27,16 +26,16 @@ int main( int argv, char* argc[] ){
 	printf( "Loading data from: %s\n", argc[1] );
     Database database = database_create( argc[1] );
 
-    char input[100];
+    char input[4][50];
     while( true ){
         printf( "Enter Command: ");
-        scanf( "%s", input );
+        int params = scanf( "%49s%49s%49s%49s", input[0], input[1], input[2], input[3] );
 
-        if( strcmp( input, "quit" ) == 0 ){
+        if( strcmp( input[0], "quit" ) == 0 ){
             break;
-        } else if( strcmp( input, "get") == 0 ){
+        } else if( strcmp( input[0], "get") == 0 ){
             printf( "You chose to get all students(TO BE IMPLEMENTED)\n");
-        } else if ( strcmp( input, "help" ) == 0 ){
+        } else if ( strcmp( input[0], "help" ) == 0 ){
             printf( "%s\n", COMMANDS );
         } else {
             printf( "%s\n", ERROR );
@@ -48,3 +47,4 @@ int main( int argv, char* argc[] ){
 
     return EXIT_SUCCESS;
 }
+

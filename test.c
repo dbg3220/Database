@@ -22,6 +22,7 @@ static int testStudent(){
     printf( "Testing student equals function\n");
     if( result ){
         printf( "TEST PASSED\n");
+		return EXIT_SUCCESS;
     } else {
         printf( "TEST FAILED\n");
         return EXIT_FAILURE;
@@ -34,6 +35,7 @@ static int testDatabase(){
 	Database database = database_create( file );
 	if( database ){
 		printf( "TEST PASSED\n" );
+		return EXIT_SUCCESS;
 	} else {
 		printf( "TEST FAILED\n" );
 		return EXIT_FAILURE;
@@ -41,5 +43,6 @@ static int testDatabase(){
 }
 
 int main(){
+	testStudent();
 	testDatabase();	
 }

@@ -34,7 +34,13 @@ static int load( Database database ){
 		if( line[ strlen( line ) - 1 ] == '\n' ){
 			line[ strlen( line ) - 1 ] = '\0';//trims the final character if it is a newline character
 		}
-		printf( "Reading -> [%s], size is %zu\n", line, strlen( line ) );
+		char* name = strtok( line, "," );
+		char* email = strtok( NULL, "," );
+		int age = atoi( strtok( NULL, "," ) );
+		double gpa = strtod( strtok( NULL, "," ), NULL );
+		printf( "name: %s, email: %s, age: %d, gpa: %.2f\n", name, email, age, gpa );
+		Student student = student_create( name, email, age, gpa );
+		list_append( database->students, (void *) student );
 	}
 	fclose( file );
 	return 1;
@@ -62,5 +68,12 @@ Database database_create( char* file ){
 
 void database_exit( Database database ){
 	//TODO
+	save( database );
+	while( list_size( database->students ) != 0 ){
+		Student student = (Student) list_get( database->students, 0 );
+		student_destroy( student );
+	}
+	list_destroy( database->students );
+	free( database );
 }
 
