@@ -23,7 +23,6 @@ typedef struct Database_H {
 /// @param database - the database to be loaded
 /// @return 1 if the data file was successfully read, 0 if there was a conflict
 static int load( Database database ){
-	//TODO
 	FILE * file = fopen( database->file, "r" );
 	if( !file ){
 		printf( "Error reading from <%s>\n", database->file );
@@ -38,7 +37,6 @@ static int load( Database database ){
 		char* email = strtok( NULL, "," );
 		int age = atoi( strtok( NULL, "," ) );
 		double gpa = strtod( strtok( NULL, "," ), NULL );
-		printf( "name: %s, email: %s, age: %d, gpa: %.2f\n", name, email, age, gpa );
 		Student student = student_create( name, email, age, gpa );
 		list_append( database->students, (void *) student );
 	}
@@ -51,6 +49,17 @@ static int load( Database database ){
 /// @param database - the database to be saved
 static void save( Database database ){
 	//TODO
+	FILE * output = fopen( database->file, "w" );
+	int length = list_size( database->students );
+	for( int i = 0; i < length; i++ ){
+		Student s = (Student) list_get( database->students, i );
+		char* name = student_getName( s );
+		char* email = student_getEmail( s );
+		int age = student_getAge( s );
+		double gpa = student_getGPA( s );
+		fprintf( output, "%s,%s,%d,%.2f\n", name, email, age, gpa );
+	}
+	fclose( output );
 }
 
 Database database_create( char* file ){
@@ -67,10 +76,10 @@ Database database_create( char* file ){
 }
 
 void database_exit( Database database ){
-	//TODO
 	save( database );
 	while( list_size( database->students ) != 0 ){
 		Student student = (Student) list_get( database->students, 0 );
+		list_delete( database->students, 0 );
 		student_destroy( student );
 	}
 	list_destroy( database->students );
