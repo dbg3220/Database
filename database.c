@@ -77,3 +77,53 @@ void database_exit( Database database ){
 	free( database );
 }
 
+ListADT database_get( Database database ){
+	ListADT list = list_create( student_equals, student_toString );
+	int length = list_size( database->students );
+	for( int i = 0; i < length; i++ ){
+		list_append( list, list_get( database->students, i ) );
+	}
+	return list;
+}
+
+Student database_getByEmail( Database database, char* email ){
+	int length = list_size( database->students );
+	for( int i = 0; i < length; i++ ){
+		Student s = list_get( database->students, i );
+		if( strcmp( student_getEmail( s ) , email ) == 0 ){
+			return s;
+		}
+	}
+	return NULL;
+}
+
+ListADT database_getByName( Database database, char* name ){
+	//TODO
+	return NULL;
+}
+
+ListADT database_getByAge( Database database, int age ){
+	//TODO
+	return NULL;
+}
+
+ListADT database_getByGPA( Database database, double low, double high ){
+	//TODO
+	return NULL;
+}
+
+bool database_add( Database database, Student student ){
+	//TODO
+	return false;
+}
+
+bool database_update( Database database, Student student ){
+	//TODO
+	return false;
+}
+
+bool database_delete( Database database, char* email ){
+	//TODO
+	return false;
+}
+

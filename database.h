@@ -88,3 +88,4 @@ bool database_update( Database database, Student student );
 /// @param student The email of the student to be deleted
 /// @return true if the student was successfully deleted, false if could not be found
 bool database_delete( Database database, char* email );
+
