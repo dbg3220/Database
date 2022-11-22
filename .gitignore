@@ -1,4 +1,7 @@
 #C compilation output
-*.o
+student.o
+database.o
+main.o
+test.o
 main
 test
