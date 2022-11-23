@@ -48,7 +48,6 @@ static int load( Database database ){
 ///
 /// @param database - the database to be saved
 static void save( Database database ){
-	//TODO
 	FILE * output = fopen( database->file, "w" );
 	int length = list_size( database->students );
 	for( int i = 0; i < length; i++ ){
@@ -99,7 +98,7 @@ Student database_getByEmail( Database database, char* email ){
 	int length = list_size( database->students );
 	for( int i = 0; i < length; i++ ){
 		Student s = list_get( database->students, i );
-		if( strcmp( student_getEmail( s ) , email ) == 0 ){
+		if( strcmp( student_getEmail( s ), email ) == 0 ){
 			return s;
 		}
 	}
@@ -107,18 +106,40 @@ Student database_getByEmail( Database database, char* email ){
 }
 
 ListADT database_getByName( Database database, char* name ){
-	//TODO
-	return NULL;
+	ListADT list = list_create( student_equals, student_toString );
+	int length = list_size( database->students );
+	for( int i = 0; i < length; i++ ){
+		Student s = list_get( database->students, i );
+		if( strcmp( student_getName( s ), name ) == 0 ){
+			list_append( list, (void *) s );
+		}
+	}
+	return list;
 }
 
 ListADT database_getByAge( Database database, int age ){
-	//TODO
-	return NULL;
+	ListADT list = list_create( student_equals, student_toString );
+	int length - list_size( database->students );
+	for( int i = 0; i < length; i++ ){
+		Student s = list_get( database->students, i );
+		if( student_getAge( s ) == age ){
+			list_append( list, (void *) s );
+		}
+	}
+	return list;
 }
 
 ListADT database_getByGPA( Database database, double low, double high ){
-	//TODO
-	return NULL;
+	ListADT list = list_create( student_equals, student_toString );
+	int length - list_size( database->students );
+	for( int i = 0; i < length; i++ ){
+		Student s = list_get( database->students, i );
+		double gpa = student_getGPA( s );
+		if( !(gpa < low) || !(gpa > high) ){
+			list_append( list, (void *) s );
+		}
+	}
+	return list;
 }
 
 bool database_add( Database database, Student student ){
