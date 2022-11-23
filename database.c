@@ -61,6 +61,22 @@ static void save( Database database ){
 	fclose( output );
 }
 
+/// Checks if a certain email is contained within the database
+/// 
+/// @param database - the database to be saved
+/// @param email The email to match against
+/// @return true if the email exists in the database, false otherwise
+static bool contains( Database database, char* email ){
+	int length = list_size( database->students );
+	for( int i = 0; i < length; i++ ){
+		Student s = (Student) list_get( database->students, i );
+		if( strcmp( email, student_getEmail( s ) ) == 0 ){
+			return true;
+		}
+	}
+	return false;
+}
+
 Database database_create( char* file ){
     Database database = (Database)malloc( sizeof( struct Database_H ) );
     database->file = file;
@@ -97,7 +113,7 @@ ListADT database_get( Database database ){
 Student database_getByEmail( Database database, char* email ){
 	int length = list_size( database->students );
 	for( int i = 0; i < length; i++ ){
-		Student s = list_get( database->students, i );
+		Student s = (Student) list_get( database->students, i );
 		if( strcmp( student_getEmail( s ), email ) == 0 ){
 			return s;
 		}
@@ -109,7 +125,7 @@ ListADT database_getByName( Database database, char* name ){
 	ListADT list = list_create( student_equals, student_toString );
 	int length = list_size( database->students );
 	for( int i = 0; i < length; i++ ){
-		Student s = list_get( database->students, i );
+		Student s = (Student) list_get( database->students, i );
 		if( strcmp( student_getName( s ), name ) == 0 ){
 			list_append( list, (void *) s );
 		}
@@ -119,9 +135,9 @@ ListADT database_getByName( Database database, char* name ){
 
 ListADT database_getByAge( Database database, int age ){
 	ListADT list = list_create( student_equals, student_toString );
-	int length - list_size( database->students );
+	int length = list_size( database->students );
 	for( int i = 0; i < length; i++ ){
-		Student s = list_get( database->students, i );
+		Student s = (Student) list_get( database->students, i );
 		if( student_getAge( s ) == age ){
 			list_append( list, (void *) s );
 		}
@@ -131,9 +147,9 @@ ListADT database_getByAge( Database database, int age ){
 
 ListADT database_getByGPA( Database database, double low, double high ){
 	ListADT list = list_create( student_equals, student_toString );
-	int length - list_size( database->students );
+	int length = list_size( database->students );
 	for( int i = 0; i < length; i++ ){
-		Student s = list_get( database->students, i );
+		Student s = (Student) list_get( database->students, i );
 		double gpa = student_getGPA( s );
 		if( !(gpa < low) || !(gpa > high) ){
 			list_append( list, (void *) s );
@@ -144,7 +160,12 @@ ListADT database_getByGPA( Database database, double low, double high ){
 
 bool database_add( Database database, Student student ){
 	//TODO
-	return false;
+	char* email = student_getEmail( student );
+	if( contains( database, email ) ){
+		return false;
+	}
+	list_append( database->students, student );	
+	return true;
 }
 
 bool database_update( Database database, Student student ){
