@@ -135,7 +135,7 @@ ListADT database_getByGPA( Database database, double low, double high ){
 	for( int i = 0; i < length; i++ ){
 		Student s = list_get( database->students, i );
 		double gpa = student_getGPA( s );
-		if( !(gpa < low) || !(gpa > high) ){
+		if( !(gpa < low) && !(gpa > high) ){
 			list_append( list, (void *) s );
 		}
 	}
