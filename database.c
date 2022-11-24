@@ -61,20 +61,21 @@ static void save( Database database ){
 	fclose( output );
 }
 
-/// Checks if a certain email is contained within the database
-/// 
-/// @param database - the database to be saved
+/// Returns the index of a student in the database with the given
+/// email.
+///
+/// @param database - the database to be analyzed
 /// @param email The email to match against
-/// @return true if the email exists in the database, false otherwise
-static bool contains( Database database, char* email ){
+/// @return The index of the student, -1 if no student found
+static int indexOf( Database database, char* email ){
 	int length = list_size( database->students );
 	for( int i = 0; i < length; i++ ){
 		Student s = (Student) list_get( database->students, i );
 		if( strcmp( email, student_getEmail( s ) ) == 0 ){
-			return true;
+			return i;
 		}
 	}
-	return false;
+	return -1;
 }
 
 Database database_create( char* file ){
@@ -159,9 +160,8 @@ ListADT database_getByGPA( Database database, double low, double high ){
 }
 
 bool database_add( Database database, Student student ){
-	//TODO
 	char* email = student_getEmail( student );
-	if( contains( database, email ) ){
+	if( indexOf( database, email ) != -1 ){
 		return false;
 	}
 	list_append( database->students, student );	
@@ -169,12 +169,26 @@ bool database_add( Database database, Student student ){
 }
 
 bool database_update( Database database, Student student ){
-	//TODO
-	return false;
+	char* email = student_getEmail( student );
+	int index = indexOf( database, email );
+	if( index == -1 ){
+		return false;
+	}
+	Student s = (Student) list_get( database->students, index );
+	free( s );
+	list_delete( database->students, index );
+	list_add( database->students, (void *)student, index );
+	return true;
 }
 
 bool database_delete( Database database, char* email ){
-	//TODO
-	return false;
+	int index = indexOf( database, email );
+	if( index == -1 ){
+		return false;
+	}
+	Student s = (Student) list_get( database->students, index );
+	free( s );
+	list_delete( database->students, index );
+	return true;
 }
 

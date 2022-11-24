@@ -73,6 +73,7 @@ bool list_add( ListADT list, void * a, int i );
 ///
 /// @param list - the ListADT to be manipulated
 /// @param a the pointer to be appended
+
 void list_append( ListADT list, void * a );
 
 /// Deletes an element from this list at the specified index
