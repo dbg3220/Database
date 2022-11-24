@@ -108,7 +108,7 @@ char* student_toString( const void * a ){
 	char* str;
 	int length = strlen( student->name ) + strlen( student->email ) + 40;
 	str = (char*)malloc( sizeof( char ) * length );
-	sprintf( str, "[name: %s, email: %s, age: %d, gpa: %.3f]", student->name, 
+	sprintf( str, "[name: %s, email: %s, age: %d, gpa: %.2f]", student->name, 
 				student->email, student->age, student->gpa );
 	return str;
 }
