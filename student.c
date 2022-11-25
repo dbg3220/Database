@@ -112,9 +112,12 @@ bool student_equals( const void * a, const void * b ){
 char* student_toString( const void * a ){
 	Student student = (Student) a;
 	char* str;
-	int length = strlen( student->name ) + strlen( student->email ) + 40;
+	int length = strlen( student->firstName ) + strlen( student->lastName ) + 
+	   	strlen( student->email ) + 20;
 	str = (char*)malloc( sizeof( char ) * length );
-	sprintf( str, "[name: %s, email: %s, age: %d, gpa: %.2f]", student->name, 
-				student->email, student->age, student->gpa );
+	sprintf( str, "[name: %s %s, email: %s, age: %d, gpa: %.2f]", 
+			student->firstName, student->lastName, student->email, 
+			student->age, student->gpa );
 	return str;
 }
+
