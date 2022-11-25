@@ -23,7 +23,6 @@
 /// @param num The num'th 10 students to be displayed
 static void display( ListADT list, int num ){
 	//TODO
- 	ListADT list = database_get( database );
 	int length = list_size( list );
 	for( int i = 0; i < 11 && i < length; i++ ){
 		Student s = (Student) list_get( list, i );
@@ -56,7 +55,7 @@ int main( int argv, char* argc[] ){
             break;
         } else if( strcmp( input, "get" ) == 0 ){
 			ListADT list = database_get( database );
-			display( list );
+			display( list, 0 );
         } else if( strcmp( input, "add" ) == 0 ){
 
 		} else if ( strcmp( input, "help" ) == 0 ){

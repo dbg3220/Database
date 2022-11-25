@@ -15,7 +15,6 @@ typedef struct Database_H {
 } * Database;
 
 #define _DATABASE_
-#define _SOURCE_
 #include "database.h"
 
 /// Loads the database from the file specified
@@ -34,9 +33,9 @@ static int load( Database database ){
 			line[ strlen( line ) - 1 ] = '\0';//trims the final character if it is a newline character
 		}
 		char* firstName = strtok( line, "," );
-		char* lastName = strtok( line, "," );
+		char* lastName = strtok( NULL, "," );
 		char* email = strtok( NULL, "," );
-		int age = atoi( strtok( NULL, "," ) );
+		int age = (int) strtol( strtok( NULL, "," ), NULL, 10 );
 		double gpa = strtod( strtok( NULL, "," ), NULL );
 		Student student = student_create( firstName, lastName, email, age, gpa );
 		list_append( database->students, (void *) student );
@@ -141,7 +140,7 @@ ListADT database_getByLastName( Database database, char* lastName ){
 	int length = list_size( database->students );
 	for( int i = 0; i < length; i++ ){
 		Student s = (Student) list_get( database->students, i );
-		if( strcmp( student_getLastName( s ), firstName ) == 0 ){
+		if( strcmp( student_getLastName( s ), lastName ) == 0 ){
 			list_append( list, (void *) s );
 		}
 	}

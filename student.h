@@ -64,42 +64,6 @@ int student_getAge( Student student );
 /// @return This student's gpa as a double
 double student_getGPA( Student student );
 
-#ifdef _SOURCE_
-
-/// Sets the name of this student
-///
-/// @param student The student to be manipulated
-/// @param name The new name of this student
-/// @return true if the student's name was successfully updated, false
-/// if the parameter was invalid
-bool student_setName( Student student, char* name );
-
-/// Sets the email of this student
-///
-/// @param student The student to be manipulated
-/// @param email The new email of this student
-/// @return true if the student's email was succesfully updated, false
-/// if the parameter was invalid
-bool student_setEmail( Student student, char* email );
-
-/// Sets the age of this student
-///
-/// @param student The student to be manipulated
-/// @param age The new age of this student
-/// @return true if the student's age was successfully updated, false
-/// if the parameter was invalid
-bool student_setAge( Student student, int age );
-
-/// Sets the gpa of this student
-///
-/// @param student The student to be manipulated
-/// @param gpa The new gpa of this student
-/// @return true if the student's age was successfully updated, false
-/// if the parameter was invalid
-bool student_setGPA( Student student, double gpa );
-
-#endif
-
 /// Equals method for comparing two students, assumes the two
 /// pointers provided are valid Student objects
 ///
@@ -114,3 +78,4 @@ bool student_equals( const void * a, const void * b );
 /// @return A valid C string representing the student, when not in use
 /// must be freed from memory by client
 char* student_toString( const void * a );
+

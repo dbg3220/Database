@@ -26,7 +26,8 @@ typedef struct Student_H {
 #include "student.h"
 
 Student student_create( char* firstName, char* lastName, char* email, int age, double gpa ){
-	if( strlen( name ) > MAX_NAME_LENGTH ||
+	if( strlen( firstName ) > MAX_NAME_LENGTH ||
+		strlen( lastName ) > MAX_NAME_LENGTH ||
 		strlen( email ) > MAX_EMAIL_LENGTH ||
 		age < MIN_AGE || gpa < MIN_GPA || gpa > MAX_GPA ){
 		return NULL;
@@ -45,7 +46,7 @@ void student_destroy( Student student ){
 }
 
 char* student_getFirstName( Student student ){
-	return &(student->fistName[0]);
+	return &(student->firstName[0]);
 }
 
 char* student_getLastName( Student student ){
@@ -64,46 +65,17 @@ double student_getGPA( Student student ){
 	return student->gpa;
 }
 
-bool student_setName( Student student, char* name ){
-	if( strlen( name ) > MAX_NAME_LENGTH ){
-		return false;
-	}
-	strcpy( student->name, name );
-	return true;
-}
-
-bool student_setEmail( Student student, char* email ){
-	if( strlen( email ) > MAX_EMAIL_LENGTH ){
-		return false;
-	}
-	strcpy( student->email, email );
-	return true;
-}
-
-bool student_setAge( Student student, int age ){
-	if( age < MIN_AGE ){
-		return false;
-	}
-	student->age = age;
-	return true;
-}
-
-bool student_setGPA( Student student, double gpa ){
-	if( gpa < MIN_GPA || gpa > MAX_GPA ){
-		return false;
-	}
-	student->gpa = gpa;
-	return true;
-}
-
 bool student_equals( const void * a, const void * b ){
 	Student s1 = (Student) a;
 	Student s2 = (Student) b;
-	char* name1 = s1->name;
-	char* name2 = s2->name;
+	char* firstName1 = s1->firstName;
+	char* firstName2 = s2->lastName;
+	char* lastName1 = s1->lastName;
+	char* lastName2 = s2->lastName;
 	char* email1 = s1->email;
 	char* email2 = s2->email;
-	return ( strcmp( name1, name2 ) == 0 ) &&
+	return ( strcmp( firstName1, firstName2 ) == 0 ) &&
+		   ( strcmp( lastName1, lastName2 ) == 0 ) &&
 		   ( strcmp( email1, email2 ) == 0 ) &&
 		   ( s1->age == s2->age ) &&
 		   ( s1->gpa == s2->gpa );
@@ -111,10 +83,9 @@ bool student_equals( const void * a, const void * b ){
 
 char* student_toString( const void * a ){
 	Student student = (Student) a;
-	char* str;
 	int length = strlen( student->firstName ) + strlen( student->lastName ) + 
-	   	strlen( student->email ) + 20;
-	str = (char*)malloc( sizeof( char ) * length );
+	   	strlen( student->email ) + 40;
+	char* str = (char*)malloc( sizeof( char ) * length );
 	sprintf( str, "[name: %s %s, email: %s, age: %d, gpa: %.2f]", 
 			student->firstName, student->lastName, student->email, 
 			student->age, student->gpa );
