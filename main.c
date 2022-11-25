@@ -15,6 +15,25 @@
                     "->'help: Shows a list of helpful commands"
 #define PROMPT		"Enter Command: "
 
+/// Displays a list of students with a parameter indicating what section
+/// of the list to display
+///
+/// @param list The list to be displayed, assumed to have data payloads of type
+/// student
+/// @param num The num'th 10 students to be displayed
+static void display( ListADT list, int num ){
+	//TODO
+ 	ListADT list = database_get( database );
+	int length = list_size( list );
+	for( int i = 0; i < 11 && i < length; i++ ){
+		Student s = (Student) list_get( list, i );
+		printf( "%d. %s\n", i, student_toString( s ) );
+	}
+	if( length > 10 ){
+		printf( "...(%d total students found)\n", length );
+	}
+}
+
 /// @brief main function of this program
 /// @return EXIT_SUCCESS upon successful completion of this program,
 /// EXIT_FAILURE otherwise
@@ -37,15 +56,10 @@ int main( int argv, char* argc[] ){
             break;
         } else if( strcmp( input, "get" ) == 0 ){
 			ListADT list = database_get( database );
-			int length = list_size( list );
-			for( int i = 1; i < 11 && i < length; i++ ){
-				Student s = (Student) list_get( list, i );
-				printf( "%d. %s\n", i, student_toString( s ) );
-			}
-			if( length > 10 ){
-				printf( "...\n" );
-			}
-        } else if ( strcmp( input, "help" ) == 0 ){
+			display( list );
+        } else if( strcmp( input, "add" ) == 0 ){
+
+		} else if ( strcmp( input, "help" ) == 0 ){
             printf( "%s\n", COMMANDS );
         } else {
             printf( "%s\n", ERROR );
