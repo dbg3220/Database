@@ -15,7 +15,7 @@ typedef struct { } * Student;
 
 /// Creates a student object
 ///
-/// The length of name must be less than 50 characters
+/// The length of first and last name must be less than 50 characters
 /// The length of email must be less than 100 characters
 /// age must be greater than 0
 /// gpa must be within the bounds [0, 4]
@@ -27,18 +27,24 @@ typedef struct { } * Student;
 /// @param age The age of the student
 /// @param gpa The gpa of the student
 /// @return A newly created student allocated on the heap, NULL if unsuccessful
-Student student_create( char* name, char* email, int age, double gpa );
+Student student_create( char* firstName, char* lastName, char* email, int age, double gpa );
 
 /// Removes from memory all space allocated for this student
 ///
 /// @param student The student to be destroyed
 void student_destroy( Student student );
 
-/// Retrieves the name of this student
+/// Retrieves the first name of this student
 ///
 /// @param student The student to be analyzed
 /// @return A pointer to the name of this student
-char* student_getName( Student student );
+char* student_getFirstName( Student student );
+
+/// Retrieves the last name of this student
+///
+/// @param student The student to be analyzed
+/// @return A pointer to the name of this student
+char* student_getLastName( Student student );
 
 /// Retrieves the email of this student
 ///

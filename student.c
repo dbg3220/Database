@@ -16,7 +16,8 @@
 typedef struct Student_H {
 	double gpa;
 	short age;
-	char name[MAX_NAME_LENGTH + 1];
+	char firstName[MAX_NAME_LENGTH + 1];
+	char lastName[MAX_NAME_LENGTH + 1];
 	char email[MAX_EMAIL_LENGTH + 1];
 } * Student;
 
@@ -24,14 +25,15 @@ typedef struct Student_H {
 #define _SOURCE_
 #include "student.h"
 
-Student student_create( char* name, char* email, int age, double gpa ){
+Student student_create( char* firstName, char* lastName, char* email, int age, double gpa ){
 	if( strlen( name ) > MAX_NAME_LENGTH ||
 		strlen( email ) > MAX_EMAIL_LENGTH ||
 		age < MIN_AGE || gpa < MIN_GPA || gpa > MAX_GPA ){
 		return NULL;
 	}
 	Student student = (Student)malloc( sizeof( struct Student_H ) );
-	strcpy( student->name, name );
+	strcpy( student->firstName, firstName );
+	strcpy( student->lastName, lastName );
 	strcpy( student->email, email );
 	student->age = (short) age;
 	student->gpa = gpa;
@@ -42,8 +44,12 @@ void student_destroy( Student student ){
 	free( student );
 }
 
-char* student_getName( Student student ){
-	return &(student->name[0]);
+char* student_getFirstName( Student student ){
+	return &(student->fistName[0]);
+}
+
+char* student_getLastName( Student student ){
+	return &(student->lastName[0]);
 }
 
 char* student_getEmail( Student student ){
