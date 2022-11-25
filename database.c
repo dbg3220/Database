@@ -33,11 +33,12 @@ static int load( Database database ){
 		if( line[ strlen( line ) - 1 ] == '\n' ){
 			line[ strlen( line ) - 1 ] = '\0';//trims the final character if it is a newline character
 		}
-		char* name = strtok( line, "," );
+		char* firstName = strtok( line, "," );
+		char* lastName = strtok( line, "," );
 		char* email = strtok( NULL, "," );
 		int age = atoi( strtok( NULL, "," ) );
 		double gpa = strtod( strtok( NULL, "," ), NULL );
-		Student student = student_create( name, email, age, gpa );
+		Student student = student_create( firstName, lastName, email, age, gpa );
 		list_append( database->students, (void *) student );
 	}
 	fclose( file );
@@ -52,11 +53,12 @@ static void save( Database database ){
 	int length = list_size( database->students );
 	for( int i = 0; i < length; i++ ){
 		Student s = (Student) list_get( database->students, i );
-		char* name = student_getName( s );
+		char* firstName = student_getFirstName( s );
+		char* lastName = student_getLastName( s );
 		char* email = student_getEmail( s );
 		int age = student_getAge( s );
 		double gpa = student_getGPA( s );
-		fprintf( output, "%s,%s,%d,%.2f\n", name, email, age, gpa );
+		fprintf( output, "%s,%s,%s,%d,%.2f\n", firstName, lastName, email, age, gpa );
 	}
 	fclose( output );
 }
@@ -122,12 +124,24 @@ Student database_getByEmail( Database database, char* email ){
 	return NULL;
 }
 
-ListADT database_getByName( Database database, char* name ){
+ListADT database_getByFirstName( Database database, char* firstName ){
 	ListADT list = list_create( student_equals, student_toString );
 	int length = list_size( database->students );
 	for( int i = 0; i < length; i++ ){
 		Student s = (Student) list_get( database->students, i );
-		if( strcmp( student_getName( s ), name ) == 0 ){
+		if( strcmp( student_getFirstName( s ), firstName ) == 0 ){
+			list_append( list, (void *) s );
+		}
+	}
+	return list;
+}
+
+ListADT database_getByLastName( Database database, char* lastName ){
+	ListADT list = list_create( student_equals, student_toString );
+	int length = list_size( database->students );
+	for( int i = 0; i < length; i++ ){
+		Student s = (Student) list_get( database->students, i );
+		if( strcmp( student_getLastName( s ), firstName ) == 0 ){
 			list_append( list, (void *) s );
 		}
 	}

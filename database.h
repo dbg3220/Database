@@ -50,7 +50,14 @@ Student database_getByEmail( Database database, char* email );
 /// @param database - the database to be analyzed
 /// @param name the name to search against
 /// @return A list of matching students, may be empty
-ListADT database_getByName( Database database, char* name );
+ListADT database_getByFirstName( Database database, char* firstName );
+
+/// Retrieves a list of all students who match the given name
+///
+/// @param database - the database to be analyzed
+/// @param name the name to search against
+/// @return A list of matching students, may be empty
+ListADT database_getByLastName( Database database, char* lastName );
 
 /// Retrieves a list of all students at the given age
 ///
