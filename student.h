@@ -72,10 +72,11 @@ double student_getGPA( Student student );
 /// @return true if s1 and s2 hold the same valuee, false otherwise
 bool student_equals( const void * a, const void * b );
 
-/// toString method for displaying a student as a string
+/// toString method for converting the state information of a student into
+/// a string. The pointer returned is allocated on the heap and must be freed
+/// by the client.
 ///
 /// @param student The student to create a string of
-/// @return A valid C string representing the student, when not in use
-/// must be freed from memory by client
+/// @return A valid C string representing the student
 char* student_toString( const void * a );
 

@@ -18,18 +18,20 @@
 /// Displays a list of students with a parameter indicating what section
 /// of the list to display
 ///
+/// @precondition num < roundup[list_size( list )/10]
 /// @param list The list to be displayed, assumed to have data payloads of type
 /// student
 /// @param num The num'th 10 students to be displayed
 static void display( ListADT list, int num ){
-	//TODO
-	int length = list_size( list );
-	for( int i = 0; i < 11 && i < length; i++ ){
+	int size = list_size( list );
+	for( int i = num * 10; i < num * 10 + 10 && i < size; i++ ){
 		Student s = (Student) list_get( list, i );
-		printf( "%d. %s\n", i, student_toString( s ) );
+		char* str = student_toString( s );
+		printf( "%d. %s\n", i + 1, str );
+		free( str );
 	}
-	if( length > 10 ){
-		printf( "...(%d total students found)\n", length );
+	if( !(size < (num * 10 + 10)) ){
+		printf( "...(%d total results found)\n", size );
 	}
 }
 
@@ -54,7 +56,7 @@ int main( int argv, char* argc[] ){
         if( strcmp( input, "quit" ) == 0 ){
             break;
         } else if( strcmp( input, "get" ) == 0 ){
-			ListADT list = database_get( database );
+			list = database_get( database );
 			display( list, 0 );
         } else if( strcmp( input, "add" ) == 0 ){
 
