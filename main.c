@@ -7,13 +7,13 @@
 
 #include "database.h"
 
-#define USAGE       "Usage: ./main <database_file>"
-#define ERROR       "Command Not Found, type 'help' to see a list of relevant commands"
-#define COMMANDS    "->'quit': Ends the program and saves all changes\n"\
-                    "->'get': Retrieves students from the database. You can get"\
-                    "all or search by name, email, age, or gpa\n"\
-                    "->'help: Shows a list of helpful commands"
-#define PROMPT		"Enter Command: "
+#define USAGE       		"Usage: ./main <database_file>"
+#define ERROR_NOT_FOUND     "Command Not Found, type 'help' to see a list of relevant commands"
+#define ERROR_USE_GET		"You must use get to bring up a list of students to update"
+#define COMMANDS    		"->'quit': Ends the program and saves all changes\n"\
+                    		"->'get': Retrieves students from the database. You can get all or search by name, email, age, or gpa\n"\
+                    		"->'help: Shows a list of helpful commands"
+#define PROMPT				"Enter Command: "
 
 /// Displays a list of students with a parameter indicating what section
 /// of the list to display
@@ -24,6 +24,10 @@
 /// @param num The num'th 10 students to be displayed
 static void display( ListADT list, int num ){
 	int size = list_size( list );
+	if( size == 0 ){
+		printf( "0 result found\n" );
+		return;
+	}
 	for( int i = num * 10; i < num * 10 + 10 && i < size; i++ ){
 		Student s = (Student) list_get( list, i );
 		char* str = student_toString( s );
@@ -48,22 +52,31 @@ int main( int argv, char* argc[] ){
     Database database = database_create( argc[1] );
 
     char input[50];
-	ListADT list;
+	ListADT list = NULL;
     while( true ){
         printf( PROMPT );
         scanf( "%49s", input );
 
-        if( strcmp( input, "quit" ) == 0 ){
+        if( strcmp( input, "quit" ) == 0 ){//quit command ends the program
             break;
-        } else if( strcmp( input, "get" ) == 0 ){
+        } else if( strcmp( input, "get" ) == 0 ){//get command gives user students to view
 			list = database_get( database );
 			display( list, 0 );
-        } else if( strcmp( input, "add" ) == 0 ){
-
-		} else if ( strcmp( input, "help" ) == 0 ){
+        } else if( strcmp( input, "add" ) == 0 ){//add command lets user add a student
+		} else if( strcmp( input, "update" ) == 0 ){//update command lets user update a student
+			if( list != NULL ){
+			} else {
+				printf( ERROR_USE_GET );
+			}
+		} else if( strcmp( input, "delete" ) == 0 ){//delete command lets user delete a student
+			if( list != NULL ){
+			} else {
+				printf( ERROR_USE_GET );
+			}
+		} else if ( strcmp( input, "help" ) == 0 ){//help command shows user useful commands
             printf( "%s\n", COMMANDS );
-        } else {
-            printf( "%s\n", ERROR );
+        } else {//default, if no command recognized shows user an error
+            printf( "%s\n", ERROR_NOT_FOUND );
         }
     }
 
