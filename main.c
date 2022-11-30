@@ -9,7 +9,7 @@
 
 #define USAGE       		"Usage: ./main <database_file>"
 #define ERROR_NOT_FOUND     "Command Not Found, type 'help' to see a list of relevant commands"
-#define ERROR_USE_GET		"You must use get to bring up a list of students to update"
+#define ERROR_USE_GET		"You must use get to bring up a list of students to modify"
 #define COMMANDS    		"->'quit': Ends the program and saves all changes\n"\
                     		"->'get': Retrieves students from the database. You can get all or search by name, email, age, or gpa\n"\
                     		"->'help: Shows a list of helpful commands"
@@ -66,12 +66,12 @@ int main( int argv, char* argc[] ){
 		} else if( strcmp( input, "update" ) == 0 ){//update command lets user update a student
 			if( list != NULL ){
 			} else {
-				printf( ERROR_USE_GET );
+				printf( "%s\n", ERROR_USE_GET );
 			}
 		} else if( strcmp( input, "delete" ) == 0 ){//delete command lets user delete a student
 			if( list != NULL ){
 			} else {
-				printf( ERROR_USE_GET );
+				printf( "%s\n", ERROR_USE_GET );
 			}
 		} else if ( strcmp( input, "help" ) == 0 ){//help command shows user useful commands
             printf( "%s\n", COMMANDS );

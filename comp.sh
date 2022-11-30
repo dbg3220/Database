@@ -8,13 +8,13 @@ OBJ_FILES="database.o student.o dep/ListADT.o"
 TARGETS=("main" "test")
 
 gcc $CFLAGS -c $C_FILES
-echo "Compiled $C_FILES into object files"
+echo "gcc $CFLAGS -c $C_FILES"
 
 for target in ${TARGETS[@]}; do
 	gcc $CFLAGS -o $target "${target}.o" $OBJ_FILES
-	echo "Linked ${target}.o $OBJ_FILES to create executable '$target'"
+	echo "gcc $CFLAGS -o $target ${target}.o $OBJ_FILES"
 done
 
 rm *.o
-echo "Removed object files to clean directory"
+echo "rm *.o"
 
