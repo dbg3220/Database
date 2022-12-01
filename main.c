@@ -11,6 +11,7 @@
 #define ERROR_NOT_FOUND     "Command Not Found, type 'help' to see a list of relevant commands"
 #define ERROR_USE_GET		"You must use get to bring up a list of students to modify"
 #define COMMANDS    		"'quit': Ends the program and saves all changes\n"\
+							"'fquit': Ends the program without saving changes\n"\
                     		"'get': Retrieves students from the database. You can get all or search by name, email, age, or gpa\n"\
 							"'next': Displays the next 10 students\n"\
 							"'clear': Clears the current students from usage\n"\
@@ -68,8 +69,13 @@ int main( int argv, char* argc[] ){
         scanf( "%49s", input );
 
         if( strcmp( input, "quit" ) == 0 ){//quit command ends the program
+		    printf( "Saving database to file\n" );
+    		database_exit( database );
             break;
-        } else if( strcmp( input, "get" ) == 0 ){//get command gives user students to view
+        } else if( strcmp( input, "fquit" ) == 0 ){
+			printf( "Closing database without saving changes\n" );
+			database_force_exit( database );
+		} else if( strcmp( input, "get" ) == 0 ){//get command gives user students to view
 			num = 0;
 			list = database_get( database );
 			display( list, num );
@@ -129,9 +135,6 @@ int main( int argv, char* argc[] ){
             printf( "%s\n", ERROR_NOT_FOUND );
         }
     }
-
-    printf( "Saving database to file\n" );
-    database_exit( database );
 
     return EXIT_SUCCESS;
 }

@@ -33,6 +33,12 @@ Database database_create( char* file );
 /// @param database - the database to be closed
 void database_exit( Database database );
 
+/// Closes the database and removes all relevant items from memory
+/// without saving any changes
+///
+/// @param database - the database to be closed
+void database_force_exit( Database database );
+
 /// Retrieves the entire database as an array of student objects.
 ///
 /// @param database - the database to be analyzed

@@ -102,6 +102,16 @@ void database_exit( Database database ){
 	free( database );
 }
 
+void database_force_exit( Database database ){
+	while( list_size( database->students ) != 0 ){
+		Student student = (Student) list_get( database->students, 0 );
+		list_delete( database->students, 0 );
+		student_destroy( student );
+	}
+	list_destroy( database->students );
+	free( database );
+}
+
 ListADT database_get( Database database ){
 	ListADT list = list_create( student_equals, student_toString );
 	int length = list_size( database->students );
