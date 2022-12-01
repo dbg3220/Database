@@ -24,7 +24,6 @@ typedef struct Database_H {
 static int load( Database database ){
 	FILE * file = fopen( database->file, "r" );
 	if( !file ){
-		printf( "Error reading from <%s>\n", database->file );
 		return 0;
 	}
 	char line[200];
