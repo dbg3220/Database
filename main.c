@@ -21,27 +21,30 @@
                     		"'help: Shows a list of helpful commands"
 #define PROMPT				"-> "
 
-/// Displays a list of students with a parameter indicating what section
-/// of the list to display
+/// Displays 10 students in the list starting with the student at index num. If
+/// an invalid index is given(i.e. < 0 or > list_size) then the first 10
+/// students are displayed. If there are not at least 10 students from index
+/// num to the end of the list than only however many students are from num to
+/// the end of the list are displayed. If the last student displayed is not the
+/// last student in the list than the size of the list is displayed.
 ///
-/// @precondition num < roundup[list_size( list )/10]
-/// @param list The list to be displayed, assumed to have data payloads of type
-/// student
-/// @param num The num'th 10 students to be displayed
+/// @param list - the list to be analyzed
+/// @param num - the index of the first student to be displayed 
 static void display( ListADT list, int num ){
 	int size = list_size( list );
-	if( size == 0 ){
-		printf( "0 result found\n" );
-		return;
+	int last_index;
+	if( num < 0 || !(num < size ) ){
+		num = 0;
 	}
-	for( int i = num * 10; i < num * 10 + 10 && i < size; i++ ){
+	for( int i = num; i < num + 10 && i < size; i++ ){
 		Student s = (Student) list_get( list, i );
 		char* str = student_toString( s );
-		printf( "%d. %s\n", i + 1, str );
+		printf( "%d. %s\n", i, str );
 		free( str );
+		last_index = i;
 	}
-	if( !(size < (num * 10 + 10)) ){
-		printf( "...(%d total results found)\n", size );
+	if( last_index < size - 1 ){
+		printf( "...(%d total students)\n", size );
 	}
 }
 
@@ -77,9 +80,8 @@ int main( int argv, char* argc[] ){
 			database_force_exit( database );
 			break;
 		} else if( strcmp( input, "get" ) == 0 ){//get command gives user students to view
-			num = 0;
 			list = database_get( database );
-			display( list, num );
+			display( list, 0 );
         } else if( strcmp( input, "next" ) == 0 ){//next command shows more students
 			if( list != NULL ){
 			} else {
