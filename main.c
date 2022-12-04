@@ -75,6 +75,7 @@ int main( int argv, char* argc[] ){
         } else if( strcmp( input, "fquit" ) == 0 ){
 			printf( "Closing database without saving changes\n" );
 			database_force_exit( database );
+			break;
 		} else if( strcmp( input, "get" ) == 0 ){//get command gives user students to view
 			num = 0;
 			list = database_get( database );
