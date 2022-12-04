@@ -4,7 +4,7 @@
 
 CFLAGS="-std=c99 -ggdb -Wall -Wextra -I dep/"
 C_FILES="main.c database.c student.c test.c"
-OBJ_FILES="database.o student.o dep/ListADT.o"
+OBJ_FILES="database.o student.o dep/Linked_ListADT.o"
 TARGETS=("main" "test")
 
 gcc $CFLAGS -c $C_FILES

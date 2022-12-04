@@ -1,6 +1,6 @@
 // File: ListADT.h
 //
-// Description: Interface to the ListADT module
+// Description: Interface to a list abstract data type module
 //
 // Author: Damon Gonzalez
 //
@@ -17,7 +17,7 @@
 
 #ifndef _LIST_IMPL_
 
-/// ListADT is a pointer to an abstract linked list data structure whose
+/// ListADT is a pointer to an abstract list data structure whose
 /// payload is generic. It is implied that the type remains constant for
 /// all elements in this list.
 
@@ -25,12 +25,13 @@ typedef struct { } * ListADT;
 
 #endif
 
-/// Create a ListADT that used the supplied function as a comparison function
+/// Create a ListADT that used the supplied function as a comparison
 /// routine.
 ///
 /// @param equals the address of the equals function
 /// @param toString the address of the toString function, converts
-/// the data payload that a client has entered into a valid C string
+/// the data payload that a client has entered into a valid C string(memory
+/// must be freed by client)
 /// @return a ListADT instance, or NULL if the allocation fails
 
 ListADT list_create( bool (*equals)( const void * a, const void * b ),
@@ -91,14 +92,16 @@ bool list_delete( ListADT list, int i );
 
 int list_size( ListADT list );
 
-/// Returns the index of the given element
+/// Returns the index of the given element. If the supplied equals function
+/// is NULL, always returns -1
 ///
 /// @param list - the ListADT to be tested
 /// @return the index of the given element, -1 if not found
 int list_indexOf( ListADT list, const void * a );
 
 /// Indicates whether a certain data entry is contained
-/// within this ListADT
+/// within this ListADT. If the supplied equals function is NULL, always
+/// returns -1
 ///
 /// @param list - the ListADT to be tested
 /// @return true if the element is in the list, false otherwise
@@ -106,7 +109,10 @@ int list_indexOf( ListADT list, const void * a );
 bool list_contains( ListADT list, const void * a );
 
 /// Prints to stdin on a single line the entire list using the print
-/// function specified by the client, ending with a newline character
+/// function specified by the client, ending with a newline character. If
+/// the supplied toString function is NULL prints an empty array.
+///
+/// @param list - the ListADT to be displayed
 
 void list_print( ListADT list );
 
