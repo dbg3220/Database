@@ -134,10 +134,19 @@ int main( int argv, char* argc[] ){
                     display( list, num );
                     printf( "...(%d total students found)\n", list_size( list ) );
                 }
+            } else if( strcmp( command, "firstname" ) == 0 ){
+                command = strtok( NULL, " " );
+                if( command == NULL ){
+                    printf( "get firstname requires a parameters, i.e. 'get firstname Damon'\n" );
+                } else {
+                    list = database_getByFirstName( database, command );
+                    display( list, num );
+                    printf( "...(%d total students found)\n", list_size( list ) );
+                }
             } else if( strcmp( command, "lastname" ) == 0 ){
                 command = strtok( NULL, " " );
                 if( command == NULL ){
-                    printf( "get lastname requires a parameters, i.e. 'get lastname Gonzalez'\n" );
+                    printf( "get lastname requires a parameter, i.e. 'get lastname Gonzalez'\n" );
                 } else {
                     list = database_getByLastName( database, command );
                     display( list, num );
@@ -153,6 +162,9 @@ int main( int argv, char* argc[] ){
                     num = 0;
                 }
                 display( list, num );
+                if( num + 9 < list_size( list ) - 1 ){
+                    printf( "...(%d total students)\n", list_size( list ) - 1 );
+                }
             } else {
                 printf( "%s\n", ERROR_USE_GET );
             }
