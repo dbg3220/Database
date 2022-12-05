@@ -44,14 +44,12 @@ static void input( int length, char buffer[length] ){
 /// an invalid index is given(i.e. < 0 or > list_size) then the first 10
 /// students are displayed. If there are not at least 10 students from index
 /// num to the end of the list than only however many students are from num to
-/// the end of the list are displayed. If the last student displayed is not the
-/// last student in the list than the size of the list is displayed.
+/// the end of the list are displayed.
 ///
 /// @param list - the list to be analyzed
 /// @param num - the index of the first student to be displayed 
 static void display( ListADT list, int num ){
     int size = list_size( list );
-    int last_index;
     if( num < 0 || !(num < size ) ){
         num = 0;
     }
@@ -60,10 +58,6 @@ static void display( ListADT list, int num ){
         char* str = student_toString( s );
         printf( "%d. %s\n", i, str );
         free( str );
-        last_index = i;
-    }
-    if( last_index < size - 1 ){
-        printf( "...(%d total students)\n", size );
     }
 }
 
@@ -90,69 +84,70 @@ int main( int argv, char* argc[] ){
     while( true ){
         printf( PROMPT );
         input( buffer_size, buffer );
+        char* command = strtok( buffer, " " );
+        if( command == NULL ){
+            command = "";
+        }
 
-        if( strcmp( buffer, "quit" ) == 0 ){//quit command ends the program
+        if( strcmp( command, "quit" ) == 0 ){//quit command ends the program
             printf( "Saving database to file\n" );
             database_exit( database );
             break;
-        } else if( strcmp( buffer, "fquit" ) == 0 ){
+        } else if( strcmp( command, "fquit" ) == 0 ){//fquit ends program without saving
             printf( "Closing database without saving changes\n" );
             database_force_exit( database );
             break;
-        } else if( strcmp( buffer, "get" ) == 0 ){//get command gives user students to view
-            list = database_get( database );
-            display( list, 0 );
-        } else if( strcmp( buffer, "next" ) == 0 ){//next command shows more students
+        } else if( strcmp( command, "get" ) == 0 ){//get command gives user students to view
             if( list != NULL ){
+                list_destroy( list );
+                list = NULL;
+            }
+            num = 0;
+            command = strtok( NULL, " " );
+            if( command == NULL ){
+                printf( "get requires at least 1 additional argument\n" );
+            } else if( strcmp( command, "all" ) == 0 ){
+                list = database_get( database );
+                display( list, num );
+                printf( "...(%d total students found)\n", list_size( list ) );
+            } else if( strcmp( command, "age" ) == 0 ) {
+                command = strtok( NULL, " " );
+                if( command == NULL ){
+                    printf( "get age requires an age parameter, i.e. 'get age 19'\n" );
+                } else {
+                    int age = strtol( command, NULL, 10 );
+                    list = database_getByAge( database, age );
+                    display( list, num );
+                }
+            } else{
+                printf( "'%s' not recognized, you can use all, name, age, gpa\n", command );
+            }
+        } else if( strcmp( command, "next" ) == 0 ){//next command shows more students
+            if( list != NULL ){
+                num += 10;
+                if( num >= list_size( list ) ){
+                    num = 0;
+                }
+                display( list, num );
             } else {
                 printf( "%s\n", ERROR_USE_GET );
             }
-        } else if( strcmp( buffer, "clear" ) == 0 ){//clear command removes the current students from view
+        } else if( strcmp( command, "clear" ) == 0 ){//clear command removes the current students from view
             list_destroy( list );
             list = NULL;
-        } else if( strcmp( buffer, "add" ) == 0 ){//add command lets user add a student
-        } else if( strcmp( buffer, "update" ) == 0 ){//update command lets user update a student
+            num = 0;
+        } else if( strcmp( command, "add" ) == 0 ){//add command lets user add a student
+        } else if( strcmp( command, "update" ) == 0 ){//update command lets user update a student
             if( list != NULL ){
-                int index;
-                int listSize = list_size( list );
-                while( true ){
-                    printf( "Enter student #-> " );
-                    int result = scanf( "%d", &index );
-                    if( result == 0 ){
-                        printf( "Error reading in your input, please try again\n" );
-                    } else if( index < 1 || index > listSize ){
-                        printf( "Invalid student #, please try again\n" );
-                    } else {
-                        break;
-                    }
-                }
-                Student student = (Student) list_get( list, index );
-                //TODO update that student
             } else {
                 printf( "%s\n", ERROR_USE_GET );
             }
-        } else if( strcmp( buffer, "delete" ) == 0 ){//delete command lets user delete a student
+        } else if( strcmp( command, "delete" ) == 0 ){//delete command lets user delete a student
             if( list != NULL ){
-                int index;
-                int listSize = list_size( list );
-                while( true ){
-                    printf( "Enter student #-> " );
-                    int result = scanf( "%d", &index );
-                    if( EOF == result ){
-                        printf( "Error reading in your input, please try again\n" );
-                    } else if( index < 1 || index > listSize ){
-                        printf( "Invalid student #, please try again\n" );
-                    } else {
-                        break;
-                    }
-                }
-                Student student = (Student) list_get( list, index );
-                char* email = student_getEmail( student );
-                database_delete( database, email );
             } else {
                 printf( "%s\n", ERROR_USE_GET );
             }
-        } else if ( strcmp( buffer, "help" ) == 0 ){//help command shows user useful commands
+        } else if ( strcmp( command, "help" ) == 0 ){//help command shows user useful commands
             printf( "%s\n", COMMANDS );
         } else {//default, if no command recognized shows user an error
             printf( "%s\n", ERROR_NOT_FOUND );
