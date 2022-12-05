@@ -21,6 +21,25 @@
                             "'help: Shows a list of helpful commands"
 #define PROMPT              "-> "
 
+/// Reads user input. Ignores all white space and terminates when a newline
+/// is entered. If the number of characters entered by the user exceeds
+/// length - 1 than the last character of the string is the character at
+/// length - 1.
+///
+/// @param length - the size of the buffer to the input string
+/// @param buffer - the buffer that the string is read into
+static void input( int length, char buffer[length] ){
+    int ch;
+    for( int i = 0; i < length - 1 && (ch = getc(stdin)) != EOF; i++ ){
+        if( ch == '\n' ){
+            buffer[i] = '\0';
+            break;
+        }
+        buffer[i] = ch;
+    }
+    buffer[length - 1] = '\0';
+}
+
 /// Displays 10 students in the list starting with the student at index num. If
 /// an invalid index is given(i.e. < 0 or > list_size) then the first 10
 /// students are displayed. If there are not at least 10 students from index
@@ -64,34 +83,35 @@ int main( int argv, char* argc[] ){
         return EXIT_FAILURE;
 	}
 
-    char input[50];
+    int buffer_size = 50;
+    char buffer[buffer_size];
     ListADT list = NULL;
     int num = 0;
     while( true ){
         printf( PROMPT );
-        scanf( "%49s", input );
+        input( buffer_size, buffer );
 
-        if( strcmp( input, "quit" ) == 0 ){//quit command ends the program
+        if( strcmp( buffer, "quit" ) == 0 ){//quit command ends the program
             printf( "Saving database to file\n" );
             database_exit( database );
             break;
-        } else if( strcmp( input, "fquit" ) == 0 ){
+        } else if( strcmp( buffer, "fquit" ) == 0 ){
             printf( "Closing database without saving changes\n" );
             database_force_exit( database );
             break;
-        } else if( strcmp( input, "get" ) == 0 ){//get command gives user students to view
+        } else if( strcmp( buffer, "get" ) == 0 ){//get command gives user students to view
             list = database_get( database );
             display( list, 0 );
-        } else if( strcmp( input, "next" ) == 0 ){//next command shows more students
+        } else if( strcmp( buffer, "next" ) == 0 ){//next command shows more students
             if( list != NULL ){
             } else {
                 printf( "%s\n", ERROR_USE_GET );
             }
-        } else if( strcmp( input, "clear" ) == 0 ){//clear command removes the current students from view
+        } else if( strcmp( buffer, "clear" ) == 0 ){//clear command removes the current students from view
             list_destroy( list );
             list = NULL;
-        } else if( strcmp( input, "add" ) == 0 ){//add command lets user add a student
-        } else if( strcmp( input, "update" ) == 0 ){//update command lets user update a student
+        } else if( strcmp( buffer, "add" ) == 0 ){//add command lets user add a student
+        } else if( strcmp( buffer, "update" ) == 0 ){//update command lets user update a student
             if( list != NULL ){
                 int index;
                 int listSize = list_size( list );
@@ -111,7 +131,7 @@ int main( int argv, char* argc[] ){
             } else {
                 printf( "%s\n", ERROR_USE_GET );
             }
-        } else if( strcmp( input, "delete" ) == 0 ){//delete command lets user delete a student
+        } else if( strcmp( buffer, "delete" ) == 0 ){//delete command lets user delete a student
             if( list != NULL ){
                 int index;
                 int listSize = list_size( list );
@@ -132,7 +152,7 @@ int main( int argv, char* argc[] ){
             } else {
                 printf( "%s\n", ERROR_USE_GET );
             }
-        } else if ( strcmp( input, "help" ) == 0 ){//help command shows user useful commands
+        } else if ( strcmp( buffer, "help" ) == 0 ){//help command shows user useful commands
             printf( "%s\n", COMMANDS );
         } else {//default, if no command recognized shows user an error
             printf( "%s\n", ERROR_NOT_FOUND );
