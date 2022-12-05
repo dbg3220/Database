@@ -118,9 +118,33 @@ int main( int argv, char* argc[] ){
                     int age = strtol( command, NULL, 10 );
                     list = database_getByAge( database, age );
                     display( list, num );
+                    printf( "...(%d total students found)\n", list_size( list ) );
+                }
+            } else if( strcmp( command, "gpa" ) == 0 ){
+                double lower, upper;
+                char* args[2];
+                args[0] = strtok( NULL, " " );
+                args[1] = strtok( NULL, " " );
+                if( args[0] == NULL || args[1] == NULL ){
+                    printf( "get gpa requires two parameters, a lower bound and upper bound\n" );
+                } else {
+                    lower = strtod( args[0], NULL );
+                    upper = strtod( args[1], NULL );
+                    list = database_getByGPA( database, lower, upper );
+                    display( list, num );
+                    printf( "...(%d total students found)\n", list_size( list ) );
+                }
+            } else if( strcmp( command, "lastname" ) == 0 ){
+                command = strtok( NULL, " " );
+                if( command == NULL ){
+                    printf( "get lastname requires a parameters, i.e. 'get lastname Gonzalez'\n" );
+                } else {
+                    list = database_getByLastName( database, command );
+                    display( list, num );
+                    printf( "...(%d total students found)\n", list_size( list ) );
                 }
             } else{
-                printf( "'%s' not recognized, you can use all, name, age, gpa\n", command );
+                printf( "'%s' not recognized, you can use all, lastname, age, gpa\n", command );
             }
         } else if( strcmp( command, "next" ) == 0 ){//next command shows more students
             if( list != NULL ){
