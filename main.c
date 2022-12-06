@@ -173,7 +173,9 @@ int main( int argv, char* argc[] ){
             list = NULL;
             num = 0;
         } else if( strcmp( command, "add" ) == 0 ){//add command lets user add a student
-            char[buffer_size] firstname, lastname, email;
+            char firstname[buffer_size];
+            char lastname[buffer_size];
+            char email[buffer_size];
             int age;
             double gpa;
             printf( "%s firstname-> ", PROMPT );
@@ -184,9 +186,18 @@ int main( int argv, char* argc[] ){
             input( buffer_size, email );
             printf( "%s age-> ", PROMPT );
             input( buffer_size, buffer );
-            while( scanf( "%d", &age ) != 1 ){
-                //TODO
-            }
+            age = (int) strtol( buffer, NULL, 10 );
+            printf( "%s gpa-> ", PROMPT );
+            input( buffer_size, buffer );
+            gpa = strtod( buffer, NULL );
+            Student student = student_create( firstname, lastname, email, age, gpa );
+            char* str = student_toString( student );
+            if( database_add( database, student ) ){
+                printf( "%s was successfully added\n", str );
+            } else {
+                printf( "This student's email already exists in the database, enter a unique email.\n" );
+                free( student );
+            }   
         } else if( strcmp( command, "update" ) == 0 ){//update command lets user update a student
             if( list != NULL ){
             } else {
@@ -194,6 +205,20 @@ int main( int argv, char* argc[] ){
             }
         } else if( strcmp( command, "delete" ) == 0 ){//delete command lets user delete a student
             if( list != NULL ){
+                command = strtok( NULL, " " );
+                if( command == NULL ){
+                    printf( "delete requires 1 more parameter, i.e. delete 0\n" );
+                } else {
+                    int student_num = (int) strtol( command, NULL, 10 );
+                    if( student_num >= 0 && student_num < list_size( list ) ){
+                        Student s = (Student) list_get( list, student_num );
+                        char* email = student_getEmail( s );
+                        database_delete( database, email );
+                    } else {
+                        printf( "%d is not a valid index\n", student_num );
+                    }
+                }
+
             } else {
                 printf( "%s\n", ERROR_USE_GET );
             }
