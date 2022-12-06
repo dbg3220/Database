@@ -173,6 +173,20 @@ int main( int argv, char* argc[] ){
             list = NULL;
             num = 0;
         } else if( strcmp( command, "add" ) == 0 ){//add command lets user add a student
+            char[buffer_size] firstname, lastname, email;
+            int age;
+            double gpa;
+            printf( "%s firstname-> ", PROMPT );
+            input( buffer_size, firstname );
+            printf( "%s lastname-> ", PROMPT );
+            input( buffer_size, lastname );
+            printf( "%s email-> ", PROMPT );
+            input( buffer_size, email );
+            printf( "%s age-> ", PROMPT );
+            input( buffer_size, buffer );
+            while( scanf( "%d", &age ) != 1 ){
+                //TODO
+            }
         } else if( strcmp( command, "update" ) == 0 ){//update command lets user update a student
             if( list != NULL ){
             } else {
