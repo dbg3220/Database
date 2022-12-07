@@ -89,17 +89,32 @@ int main( int argv, char* argc[] ){
             command = "";
         }
 
-        if( strcmp( command, "quit" ) == 0 ){//quit command ends the program
+        if( strcmp( command, "quit" ) == 0 ){//'quit'
             printf( "Saving database to file\n" );
             database_exit( database );
             break;
-        } else if( strcmp( command, "fquit" ) == 0 ){//fquit ends program without saving
+        } else if( strcmp( command, "fquit" ) == 0 ){//'fquit'
             printf( "Closing database without saving changes\n" );
             database_force_exit( database );
             break;
-        } else if ( strcmp( command, "help" ) == 0 ){//help command shows user useful commands
+        } else if( strcmp( command, "next" ) == 0 ){//'next'
+            if( list != NULL ){
+                num += 10;
+                if( num >= list_size( list ) ){
+                    num = 0;
+                }
+                display( list, num );
+            } else {
+                printf( "You must have a list brought up to use 'next'\n" );
+            }
+        } else if( strcmp( command, "clear" ) == 0 ){//'clear'
+            if( list != NULL ){
+                list_destroy( list );
+                list = NULL;
+            }
+        } else if ( strcmp( command, "help" ) == 0 ){//'help'
             printf( "%s\n", COMMANDS );
-        } else {//default, if no command recognized shows user an error
+        } else {//'default'
             printf( "%s\n", ERROR_NOT_FOUND );
         }
     }
