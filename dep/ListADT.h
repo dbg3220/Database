@@ -43,8 +43,7 @@ ListADT list_create( bool (*equals)( const void * a, const void * b ),
 
 void list_destroy( ListADT list );
 
-/// Remove all contents from the supplied ListADT, effectively creates
-/// an empty list
+/// Remove all contents from the supplied ListADT creating an empty list
 ///
 /// @param list - the ListADT to be manipulated
 
@@ -58,7 +57,7 @@ void list_clear( ListADT list );
 /// @param i - the index of the element to retrieve
 /// @return the value at index i
 
-void * list_get( ListADT list, int i );
+void* list_get( ListADT list, int i );
 
 /// Adds an element to this list at the specified index, pushes all elements
 /// beyond this index by one
@@ -68,22 +67,31 @@ void * list_get( ListADT list, int i );
 /// @param i the index to insert at
 /// @return true if the element was successfully added, false otherwise
 
-bool list_add( ListADT list, void * a, int i );
+bool list_add( ListADT list, void* a, int i );
 
 /// Appends an element to this list
 ///
 /// @param list - the ListADT to be manipulated
 /// @param a the pointer to be appended
 
-void list_append( ListADT list, void * a );
+void list_append( ListADT list, void* a );
+
+/// Sets an element at the specified index to the specified parameter
+///
+/// @param list - the ListADT to be manipulated
+/// @param a the new pointer
+/// @param i the index to set at
+/// @return true if the element was successfully added, false otherwise
+
+bool list_set( ListADT list, void* a, int i );
 
 /// Deletes an element from this list at the specified index
 ///
 /// @param list - the ListADT to be manipulated
 /// @param i the index to delete
-/// @return true if the element was successfully deleted, false otherwise
+/// @return the data payload if successful, NULL otherwise
 
-bool list_delete( ListADT list, int i );
+void* list_delete( ListADT list, int i );
 
 /// Gives the size of the list
 ///
@@ -97,6 +105,7 @@ int list_size( ListADT list );
 ///
 /// @param list - the ListADT to be tested
 /// @return the index of the given element, -1 if not found
+
 int list_indexOf( ListADT list, const void * a );
 
 /// Indicates whether a certain data entry is contained

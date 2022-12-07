@@ -2,9 +2,9 @@
 
 ## Modify this compilation file whenever a new C source file is added
 
-CFLAGS="-std=c99 -ggdb -Wall -Wextra"
-C_FILES="main.c database.c student.c Linked_ListADT.c test.c"
-OBJ_FILES="database.o student.o Linked_ListADT.o"
+CFLAGS="-std=c99 -ggdb -Wall -Wextra -I dep/"
+C_FILES="main.c database.c student.c test.c"
+OBJ_FILES="database.o student.o dep/Linked_ListADT.o"
 TARGETS=("main" "test")
 
 gcc $CFLAGS -c $C_FILES
