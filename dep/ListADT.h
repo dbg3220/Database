@@ -57,7 +57,7 @@ void list_clear( ListADT list );
 /// @param i - the index of the element to retrieve
 /// @return the value at index i
 
-void* list_get( ListADT list, int i );
+void* list_get( ListADT list, int index );
 
 /// Adds an element to this list at the specified index, pushes all elements
 /// beyond this index by one
@@ -67,7 +67,7 @@ void* list_get( ListADT list, int i );
 /// @param i the index to insert at
 /// @return true if the element was successfully added, false otherwise
 
-bool list_add( ListADT list, void* a, int i );
+bool list_add( ListADT list, void* a, int index );
 
 /// Appends an element to this list
 ///
@@ -81,9 +81,9 @@ void list_append( ListADT list, void* a );
 /// @param list - the ListADT to be manipulated
 /// @param a the new pointer
 /// @param i the index to set at
-/// @return true if the element was successfully added, false otherwise
+/// @return true if the element was successfully set to the value, false otherwise
 
-bool list_set( ListADT list, void* a, int i );
+bool list_set( ListADT list, void* a, int index );
 
 /// Deletes an element from this list at the specified index
 ///
@@ -91,7 +91,7 @@ bool list_set( ListADT list, void* a, int i );
 /// @param i the index to delete
 /// @return the data payload if successful, NULL otherwise
 
-void* list_delete( ListADT list, int i );
+void* list_delete( ListADT list, int index );
 
 /// Gives the size of the list
 ///
@@ -117,7 +117,7 @@ int list_indexOf( ListADT list, const void * a );
 
 bool list_contains( ListADT list, const void * a );
 
-/// Prints to stdin on a single line the entire list using the print
+/// Prints to standard output on a single line the entire list using the toString
 /// function specified by the client, ending with a newline character. If
 /// the supplied toString function is NULL prints an empty array.
 ///
@@ -126,3 +126,4 @@ bool list_contains( ListADT list, const void * a );
 void list_print( ListADT list );
 
 #endif
+
