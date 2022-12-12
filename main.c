@@ -65,7 +65,20 @@ static ListADT get( Database database, ListADT list ){
     char* subcommand = strtok( NULL, " " );
     if( strcmp( subcommand, "all" ) == 0 ){
         list = database_get( database );
-    } else {
+    } else if( strcmp( subcommand, "firstname" ) == 0 ){
+        subcommand = strtok( NULL, " " );
+        if( subcommand != NULL ){
+            if( list != NULL ){
+                list_destroy( list );
+            }
+            list = database_getByFirstName( database, subcommand );
+        } else {
+            printf( "get firstname requires 1 more parameter\n" );
+        }
+    } else if( strcmp( subcommand, "lastname" ) == 0 ){
+    } else if( strcmp( subcommand, "age" ) == 0 ){
+    } else if( strcmp( subcommand, "gpa" ) == 0 ){
+    }else {
         printf( "%s is not a command of 'get'\n", subcommand );
         return list;
     }
