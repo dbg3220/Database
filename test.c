@@ -9,16 +9,14 @@
 #include "database.h"
 
 static int testStudent(){
-    Student student = student_create( "Damon", "Gonzalez", "dbg3220@rit.edu", 19, 3.74 );
-    char* str = student_toString( student );
-    printf( "%s\n", str );
-    free( str );
-
-    ListADT list = list_create( student_equals, student_toString );
-    list_append( list, (void *) student );
-
-    Student duplicate = student_create( "Damon", "Gonzalez", "dbg3220@rit.edu", 19, 3.74 );
-    bool result = list_contains( list, (void *) duplicate );
+    char* firstname = "Damon";
+    char* lastname = "Gonzalez";
+    char* email = "dbg3220@rit.edu";
+    int age = 19;
+    double gpa = 3.74;
+    Student student = student_create( firstname, lastname, email, age, gpa );
+    Student duplicate = student_create( firstname, lastname, email, age, gpa );
+    bool result = student_equals( (void*) student, (void*) duplicate );
     printf( "Testing student equals function\n");
     if( result ){
         printf( "TEST PASSED\n");

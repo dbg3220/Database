@@ -69,7 +69,7 @@ bool student_equals( const void * a, const void * b ){
     Student s1 = (Student) a;
     Student s2 = (Student) b;
     char* firstName1 = s1->firstName;
-    char* firstName2 = s2->lastName;
+    char* firstName2 = s2->firstName;
     char* lastName1 = s1->lastName;
     char* lastName2 = s2->lastName;
     char* email1 = s1->email;
