@@ -61,6 +61,22 @@ static void display( ListADT list, int num ){
     }
 }
 
+static void get( ListADT list ){
+    printf( "UNFINISHED\n" );
+}
+
+static void add( ListADT list ){    
+    printf( "UNFINISHED\n" );
+}
+
+static void update( ListADT list ){
+    printf( "UNFINISHED\n" );
+}
+
+static void delete( ListADT list ){
+    printf( "UNFINISHED\n" );
+}
+
 /// @brief main function of this program
 /// @return EXIT_SUCCESS upon successful completion of this program,
 /// EXIT_FAILURE otherwise
@@ -97,6 +113,8 @@ int main( int argv, char* argc[] ){
             printf( "Closing database without saving changes\n" );
             database_force_exit( database );
             break;
+        } else if( strcmp( command, "get" ) == 0 ){//'get'
+            get( list );
         } else if( strcmp( command, "next" ) == 0 ){//'next'
             if( list != NULL ){
                 num += 10;
@@ -112,7 +130,13 @@ int main( int argv, char* argc[] ){
                 list_destroy( list );
                 list = NULL;
             }
-        } else if ( strcmp( command, "help" ) == 0 ){//'help'
+        } else if( strcmp( command, "add" ) == 0 ){//'add'
+            add( list );
+        } else if( strcmp( command, "update" ) == 0 ){//'update'
+            update( list );
+        } else if( strcmp( command, "delete" ) == 0 ){//'delete'
+            delete( list );
+        } else if( strcmp( command, "help" ) == 0 ){//'help'
             printf( "%s\n", COMMANDS );
         } else {//'default'
             printf( "%s\n", ERROR_NOT_FOUND );
