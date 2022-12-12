@@ -61,19 +61,26 @@ static void display( ListADT list, int num ){
     }
 }
 
-static void get( ListADT list ){
+static ListADT get( Database database, ListADT list ){
+    char* subcommand = strtok( NULL, " " );
+    if( strcmp( subcommand, "all" ) == 0 ){
+        list = database_get( database );
+    } else {
+        printf( "%s is not a command of 'get'\n", subcommand );
+        return list;
+    }
+    //TODO add more commands, ensure function follows logical flow
+}
+
+static ListADT add( ListADT list ){    
     printf( "UNFINISHED\n" );
 }
 
-static void add( ListADT list ){    
+static ListADT update( ListADT list ){
     printf( "UNFINISHED\n" );
 }
 
-static void update( ListADT list ){
-    printf( "UNFINISHED\n" );
-}
-
-static void delete( ListADT list ){
+static ListADT delete( ListADT list ){
     printf( "UNFINISHED\n" );
 }
 
@@ -114,7 +121,7 @@ int main( int argv, char* argc[] ){
             database_force_exit( database );
             break;
         } else if( strcmp( command, "get" ) == 0 ){//'get'
-            get( list );
+            list = get( list );
         } else if( strcmp( command, "next" ) == 0 ){//'next'
             if( list != NULL ){
                 num += 10;
@@ -131,11 +138,11 @@ int main( int argv, char* argc[] ){
                 list = NULL;
             }
         } else if( strcmp( command, "add" ) == 0 ){//'add'
-            add( list );
+            list = add( list );
         } else if( strcmp( command, "update" ) == 0 ){//'update'
-            update( list );
+            list = update( list );
         } else if( strcmp( command, "delete" ) == 0 ){//'delete'
-            delete( list );
+            list = delete( list );
         } else if( strcmp( command, "help" ) == 0 ){//'help'
             printf( "%s\n", COMMANDS );
         } else {//'default'
