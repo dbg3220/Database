@@ -61,6 +61,12 @@ static void display( ListADT list, int num ){
     }
 }
 
+/// Handles the get command from the user. If the command entered by the user
+/// is improperly formatted than the list passed in as an argument goes
+/// unchanged and is returned.
+///
+/// @param database - the database to get students from
+/// @param list - the list already brought up by the user, may be NULL or empty
 static ListADT get( Database database, ListADT list ){
     char* subcommand = strtok( NULL, " " );
     if( strcmp( subcommand, "all" ) == 0 ){
