@@ -47,7 +47,7 @@ static void input( int length, char buffer[length] ){
 /// the end of the list are displayed.
 ///
 /// @param list - the list to be analyzed
-/// @param num - the index of the first student to be displayed 
+/// @param num - the index of the first student to be displayed
 static void display( ListADT list, int num ){
     int size = list_size( list );
     if( num < 0 || !(num < size ) ){
