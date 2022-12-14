@@ -61,6 +61,7 @@ static void display( ListADT list, int num ){
     }
 }
 
+//NEEDS REDESIGN
 /// Handles the get command from the user. If the command entered by the user
 /// is improperly formatted than the list passed in as an argument goes
 /// unchanged and is returned.
@@ -69,7 +70,12 @@ static void display( ListADT list, int num ){
 /// @param list - the list already brought up by the user, may be NULL or empty
 static ListADT get( Database database, ListADT list ){
     char* subcommand = strtok( NULL, " " );
-    if( strcmp( subcommand, "all" ) == 0 ){
+    if( subcommand == NULL ){
+        printf( "get requires at least 1 more parameter\n" );
+    } else if( strcmp( subcommand, "all" ) == 0 ){
+        if( list != NULL ){
+            list_destroy( list );
+        }
         list = database_get( database );
     } else if( strcmp( subcommand, "firstname" ) == 0 ){
         subcommand = strtok( NULL, " " );
@@ -82,24 +88,59 @@ static ListADT get( Database database, ListADT list ){
             printf( "get firstname requires 1 more parameter\n" );
         }
     } else if( strcmp( subcommand, "lastname" ) == 0 ){
+        subcommand = strtok( NULL, " " );
+        if( subcommand != NULL ){
+            if( list != NULL ){
+                list_destroy( list );
+            }
+            list = database_getByLastName( database, subcommand );
+        } else {
+            printf( "get lastname requires 1 more parameter\n" );
+        }
     } else if( strcmp( subcommand, "age" ) == 0 ){
+        subcommand = strtok( NULL, " " );
+        if( subcommand != NULL ){
+            if( list != NULL ){
+                list_destroy( list );
+            }
+            int age = (int) strtol( subcommand, NULL, 10 );
+            list = database_getByAge( database, age );
+        } else {
+            printf( "get age requires 1 more parameter\n" );
+        }
     } else if( strcmp( subcommand, "gpa" ) == 0 ){
-    }else {
-        printf( "%s is not a command of 'get'\n", subcommand );
-        return list;
+        double low, high;
+        subcommand = strtok( NULL, " " );
+        if( subcommand == NULL ){
+            printf( "get gpa requires 2 more parameters(i.e. get gpa <low> <high>\n" );
+        } else {
+            low = strtod( subcommand, NULL );
+            subcommand = strtok( NULL, " " );
+            if( subcommand == NULL ){
+                printf( "get gpa requires 2 more parameters(i.e. get gpa <low> <high>\n" );
+            } else {
+                high = strtod( subcommand, NULL );
+                if( list != NULL ){
+                    list_destroy( list );
+                }
+                list = database_getByGPA( database, low, high );
+            }
+        }
+    } else {
+        printf( "%s is not a subcommand of get\n", subcommand );
     }
-    //TODO add more commands, ensure function follows logical flow
+    return list;
 }
 
-static ListADT add( ListADT list ){    
+static ListADT add( Database database, ListADT list ){    
     printf( "UNFINISHED\n" );
 }
 
-static ListADT update( ListADT list ){
+static ListADT update( Database database, ListADT list ){
     printf( "UNFINISHED\n" );
 }
 
-static ListADT delete( ListADT list ){
+static ListADT delete( Database database, ListADT list ){
     printf( "UNFINISHED\n" );
 }
 
@@ -140,7 +181,9 @@ int main( int argv, char* argc[] ){
             database_force_exit( database );
             break;
         } else if( strcmp( command, "get" ) == 0 ){//'get'
-            list = get( list );
+            num = 0;
+            list = get( database, list );
+            //TODO
         } else if( strcmp( command, "next" ) == 0 ){//'next'
             if( list != NULL ){
                 num += 10;
@@ -157,11 +200,11 @@ int main( int argv, char* argc[] ){
                 list = NULL;
             }
         } else if( strcmp( command, "add" ) == 0 ){//'add'
-            list = add( list );
+            list = add( database, list );
         } else if( strcmp( command, "update" ) == 0 ){//'update'
-            list = update( list );
+            list = update( database, list );
         } else if( strcmp( command, "delete" ) == 0 ){//'delete'
-            list = delete( list );
+            list = delete( database, list );
         } else if( strcmp( command, "help" ) == 0 ){//'help'
             printf( "%s\n", COMMANDS );
         } else {//'default'
