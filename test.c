@@ -100,8 +100,16 @@ static int testStudent(){
 }
 
 static int testDatabase(){
+    char* nofile = "file.csv";
+    printf( "Testing database_create with non-existent file <%s>\n", nofile );
+    Database test = database_create( nofile );
+    if( !test ){
+        printf( PASS );
+    } else {
+        printf( FAIL );
+    }
 	char* file = "data.csv";
-	printf( "Testing database functionality with file <%s>\n", file );
+	printf( "Testing database_create with file <%s>\n", file );
 	Database database = database_create( file );
 	if( database ){
 		printf( PASS );
