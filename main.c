@@ -8,6 +8,7 @@
 #include "database.h"
 
 #define USAGE               "Usage: ./main <database_file>"
+#define BUFFER_SIZE         50
 #define ERROR_NOT_FOUND     "Command Not Found, type 'help' to see a list of relevant commands"
 #define ERROR_USE_GET       "You must use get to bring up a list of students to modify"
 #define COMMANDS            "'quit': Ends the program and saves all changes\n"\
@@ -40,6 +41,16 @@ static void input( int length, char buffer[length] ){
     buffer[length - 1] = '\0';
 }
 
+/// Takes a string and parses all text separated by spaces into an array
+/// up to the MAX_ARGSth argument. If the original string has less arguments
+/// than MAX_ARGS the value of following strings is not guaranteed.
+///
+/// @param buffer - the string to read from
+/// @param args - the string array to parse into
+static void parse( char buffer[], char* args[] ){
+    //TODO
+}
+
 /// Displays 10 students in the list starting with the student at index num. If
 /// an invalid index is given(i.e. < 0 or > list_size) then the first 10
 /// students are displayed. If there are not at least 10 students from index
@@ -61,87 +72,20 @@ static void display( ListADT list, int num ){
     }
 }
 
-//NEEDS REDESIGN
-/// Handles the get command from the user. If the command entered by the user
-/// is improperly formatted than the list passed in as an argument goes
-/// unchanged and is returned.
-///
-/// @param database - the database to get students from
-/// @param list - the list already brought up by the user, may be NULL or empty
 static ListADT get( Database database, ListADT list ){
-    char* subcommand = strtok( NULL, " " );
-    if( subcommand == NULL ){
-        printf( "get requires at least 1 more parameter\n" );
-    } else if( strcmp( subcommand, "all" ) == 0 ){
-        if( list != NULL ){
-            list_destroy( list );
-        }
-        list = database_get( database );
-    } else if( strcmp( subcommand, "firstname" ) == 0 ){
-        subcommand = strtok( NULL, " " );
-        if( subcommand != NULL ){
-            if( list != NULL ){
-                list_destroy( list );
-            }
-            list = database_getByFirstName( database, subcommand );
-        } else {
-            printf( "get firstname requires 1 more parameter\n" );
-        }
-    } else if( strcmp( subcommand, "lastname" ) == 0 ){
-        subcommand = strtok( NULL, " " );
-        if( subcommand != NULL ){
-            if( list != NULL ){
-                list_destroy( list );
-            }
-            list = database_getByLastName( database, subcommand );
-        } else {
-            printf( "get lastname requires 1 more parameter\n" );
-        }
-    } else if( strcmp( subcommand, "age" ) == 0 ){
-        subcommand = strtok( NULL, " " );
-        if( subcommand != NULL ){
-            if( list != NULL ){
-                list_destroy( list );
-            }
-            int age = (int) strtol( subcommand, NULL, 10 );
-            list = database_getByAge( database, age );
-        } else {
-            printf( "get age requires 1 more parameter\n" );
-        }
-    } else if( strcmp( subcommand, "gpa" ) == 0 ){
-        double low, high;
-        subcommand = strtok( NULL, " " );
-        if( subcommand == NULL ){
-            printf( "get gpa requires 2 more parameters(i.e. get gpa <low> <high>\n" );
-        } else {
-            low = strtod( subcommand, NULL );
-            subcommand = strtok( NULL, " " );
-            if( subcommand == NULL ){
-                printf( "get gpa requires 2 more parameters(i.e. get gpa <low> <high>\n" );
-            } else {
-                high = strtod( subcommand, NULL );
-                if( list != NULL ){
-                    list_destroy( list );
-                }
-                list = database_getByGPA( database, low, high );
-            }
-        }
-    } else {
-        printf( "%s is not a subcommand of get\n", subcommand );
-    }
-    return list;
+    //TODO
 }
 
 static ListADT add( Database database, ListADT list ){    
-    printf( "UNFINISHED\n" );
+    //TODO
 }
 
 static ListADT update( Database database, ListADT list ){
-    printf( "UNFINISHED\n" );
+    //TODO
 }
 
 static ListADT delete( Database database, ListADT list ){
-    printf( "UNFINISHED\n" );
+    //TODO
 }
 
 /// @brief main function of this program
@@ -160,31 +104,26 @@ int main( int argv, char* argc[] ){
         return EXIT_FAILURE;
 	}
 
-    int buffer_size = 50;
-    char buffer[buffer_size];
+    char buffer[BUFFER_SIZE];
     ListADT list = NULL;
     int num = 0;
     while( true ){
         printf( PROMPT );
-        input( buffer_size, buffer );
-        char* command = strtok( buffer, " " );
-        if( command == NULL ){
-            command = "";
-        }
+        input( BUFFER_SIZE, buffer );
+        char* args[MAX_ARGS];
+        parse( buffer, args );
 
-        if( strcmp( command, "quit" ) == 0 ){//'quit'
+        if( strcmp( args[0], "quit" ) == 0 ){//'quit'
             printf( "Saving database to file\n" );
             database_exit( database );
             break;
-        } else if( strcmp( command, "fquit" ) == 0 ){//'fquit'
+        } else if( strcmp( args[0], "fquit" ) == 0 ){//'fquit'
             printf( "Closing database without saving changes\n" );
             database_force_exit( database );
             break;
-        } else if( strcmp( command, "get" ) == 0 ){//'get'
-            num = 0;
-            list = get( database, list );
+        } else if( strcmp( args[0], "get" ) == 0 ){//'get'
             //TODO
-        } else if( strcmp( command, "next" ) == 0 ){//'next'
+        } else if( strcmp( args[0], "next" ) == 0 ){//'next'
             if( list != NULL ){
                 num += 10;
                 if( num >= list_size( list ) ){
@@ -194,24 +133,25 @@ int main( int argv, char* argc[] ){
             } else {
                 printf( "You must have a list brought up to use 'next'\n" );
             }
-        } else if( strcmp( command, "clear" ) == 0 ){//'clear'
+        } else if( strcmp( args[0], "clear" ) == 0 ){//'clear'
             if( list != NULL ){
                 list_destroy( list );
                 list = NULL;
             }
-        } else if( strcmp( command, "add" ) == 0 ){//'add'
-            list = add( database, list );
-        } else if( strcmp( command, "update" ) == 0 ){//'update'
-            list = update( database, list );
-        } else if( strcmp( command, "delete" ) == 0 ){//'delete'
-            list = delete( database, list );
-        } else if( strcmp( command, "help" ) == 0 ){//'help'
+        } else if( strcmp( args[0], "add" ) == 0 ){//'add'
+            //TODO
+        } else if( strcmp( args[0], "update" ) == 0 ){//'update'
+            //TODO
+        } else if( strcmp( args[0], "delete" ) == 0 ){//'delete'
+            //TODO
+        } else if( strcmp( args[0], "help" ) == 0 ){//'help'
             printf( "%s\n", COMMANDS );
         } else {//'default'
             printf( "%s\n", ERROR_NOT_FOUND );
         }
     }
-    if( list != NULL ){
+
+    if( list != NULL ){//if list wasn't cleared before quit/fquit
         list_destroy( list );
     }
 
