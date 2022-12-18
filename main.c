@@ -48,8 +48,23 @@ static void input( int length, char buffer[length] ){
 ///
 /// @param buffer - the string to read from
 /// @param args - the string array to parse into
-static void parse( char buffer[], char* args[] ){
-    //TODO
+/// @return The number of arguments processed, an int from 0 to 4
+static int parse( char buffer[], char* args[] ){
+    int arguments = 0;
+    if( strcmp( buffer, "" ) == 0 ){
+        return arguments;
+    }
+    
+    args[0] = strtok( buffer, " " );
+    arguments++;
+    for( int i = 1; i < MAX_ARGS; i++ ){
+        args[i] = strtok( NULL, " " );
+        if( args[i] == NULL ){
+            break;
+        }
+        arguments++;
+    }
+    return arguments;
 }
 
 /// Displays 10 students in the list starting with the student at index num. If
@@ -75,18 +90,22 @@ static void display( ListADT list, int num ){
 
 static ListADT get( Database database, ListADT list ){
     //TODO
+    return NULL;
 }
 
 static ListADT add( Database database, ListADT list ){    
     //TODO
+    return NULL;
 }
 
 static ListADT update( Database database, ListADT list ){
     //TODO
+    return NULL;
 }
 
 static ListADT delete( Database database, ListADT list ){
     //TODO
+    return NULL;
 }
 
 /// @brief main function of this program
@@ -112,7 +131,7 @@ int main( int argv, char* argc[] ){
         printf( PROMPT );
         input( BUFFER_SIZE, buffer );
         char* args[MAX_ARGS];
-        parse( buffer, args );
+        int arguments = parse( buffer, args );
         args[0] = "";//remove when implementing commands
 
         if( strcmp( args[0], "quit" ) == 0 ){//'quit'
