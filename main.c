@@ -8,6 +8,7 @@
 #include "database.h"
 
 #define USAGE               "Usage: ./main <database_file>"
+#define MAX_ARGS            4
 #define BUFFER_SIZE         50
 #define ERROR_NOT_FOUND     "Command Not Found, type 'help' to see a list of relevant commands"
 #define ERROR_USE_GET       "You must use get to bring up a list of students to modify"
@@ -112,6 +113,7 @@ int main( int argv, char* argc[] ){
         input( BUFFER_SIZE, buffer );
         char* args[MAX_ARGS];
         parse( buffer, args );
+        args[0] = "";//remove when implementing commands
 
         if( strcmp( args[0], "quit" ) == 0 ){//'quit'
             printf( "Saving database to file\n" );
