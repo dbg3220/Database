@@ -1,4 +1,9 @@
-// Main module of this program, will interpret user input to modify the student database
+// Main module of this program that will interpret user input and run the
+// relevant commands described in database.h using objects described in
+// student.h
+//
+// @author Damon Gonzalez
+//
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,7 +13,7 @@
 #include "database.h"
 
 #define USAGE               "Usage: ./main <database_file>"
-#define MAX_ARGS            4
+#define MAX_ARGS            6
 #define BUFFER_SIZE         50
 #define ERROR_NOT_FOUND     "Command Not Found, type 'help' to see a list of relevant commands"
 #define ERROR_USE_GET       "You must use get to bring up a list of students to modify"
@@ -79,7 +84,7 @@ static int parse( char buffer[], char* args[] ){
 /// @param num - the index of the first student to be displayed
 static void display( ListADT list, int num ){
     int size = list_size( list );
-    if( num < 0 || !(num < size ) ){
+    if( num < 0 || !(num < size) ){
         num = 0;
     }
     for( int i = num; i < num + 10 && i < size; i++ ){
@@ -159,9 +164,46 @@ static ListADT get( Database database, ListADT list, char* args[],
     }
 }
 
-static ListADT add( Database database, ListADT list ){    
-    //TODO
-    return NULL;
+/// Handles the add command input by the user. Has 5 additional arguments, one
+/// for each descriptive value of a student. If any of the arguments are
+/// improperly formed or if there aren't sufficient arguments no change is made
+/// to the database.
+///
+/// @param database - the database to add to
+/// @param args - the arguments written by the user
+/// @param arguments - the amount of arguments given by the user
+static void add( Database database, char* args[], int arguments ){    
+    if( arguments < 6 ){
+        printf( "add requires 5 additional parameter, i.e. get <firstname>"\
+                "<lastname> <email> <age> <gpa>\n" );
+        return;
+    }
+
+    int age;
+    double gpa;
+    if( sscanf( args[4], "%d", &age ) != 1 ){
+        printf( "%s is not a valid number\n", args[4] );
+        return;
+    }
+    if( sscanf( args[5], "%lf", &gpa ) != 1 ){
+        printf( "%s is not a valid decimal number\n", args[5] );
+        return;
+    }
+    
+    Student student = student_create( args[1], args[2], args[3], age, gpa );
+    if( !student ){
+        printf( "one of your student descriptors is invalid\n" );
+        return;
+    }
+    if( !database_add( database, student ) ){
+        printf( "a student with a duplicate email was found, the student"\
+                " could not be found\n" );
+        return;
+    }
+
+    char* str = student_toString( (void*) student );
+    printf( "%s has been successfully added to the database\n", str );
+    free( str );
 }
 
 static ListADT update( Database database, ListADT list ){
@@ -170,7 +212,7 @@ static ListADT update( Database database, ListADT list ){
 }
 
 /// Handles the delete command input by the user, has only 1 additional
-/// parameter. If the command is successful the requested student is removed
+/// argument. If the command is successful the requested student is removed
 /// from the database and from the ListADT passed in. If the command is
 /// improperly formatted than the database is not changed and the ListADT
 /// passed in is unchanged. If list is NULL than the command cannot be
@@ -261,7 +303,7 @@ int main( int argv, char* argc[] ){
                 list = NULL;
             }
         } else if( strcmp( args[0], "add" ) == 0 ){//'add'
-            //TODO
+            add( database, args, arguments );
         } else if( strcmp( args[0], "update" ) == 0 ){//'update'
             //TODO
         } else if( strcmp( args[0], "delete" ) == 0 ){//'delete'
