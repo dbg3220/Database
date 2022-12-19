@@ -14,7 +14,7 @@
 #define ERROR_USE_GET       "You must use get to bring up a list of students to modify"
 #define COMMANDS            "'quit': Ends the program and saves all changes\n"\
                             "'fquit': Ends the program without saving changes\n"\
-                            "'get': Retrieves students from the database. You can get all or search by name, email, age, or gpa\n"\
+                            "'get': Retrieves students from the database. You can get all or search by firstname, lastname, age, or gpa\n"\
                             "'next': Displays the next 10 students\n"\
                             "'clear': Clears the current students from usage\n"\
                             "'add': Adds a new student to the database\n"\
@@ -32,7 +32,7 @@
 /// @param buffer - the buffer that the string is read into
 static void input( int length, char buffer[length] ){
     int ch;
-    for( int i = 0; i < length - 1 && (ch = getc(stdin)) != EOF; i++ ){
+    for( int i = 0; i < length - 1 && (ch = getc( stdin )) != EOF; i++ ){
         if( ch == '\n' ){
             buffer[i] = '\0';
             break;
@@ -91,7 +91,7 @@ static void display( ListADT list, int num ){
 /// Handles the get command input by the user with additional arguments. If
 /// the command is successful the ListADT that is passed in is destroyed if
 /// it is not NULL. If the command is improperly formatted than the ListADT
-/// remains unchanged and is returned.
+/// remains unchanged and NULL is returned.
 ///
 /// @param database - the database to get from
 /// @param list - the current list brought up by the user, may be NULL
@@ -100,7 +100,6 @@ static void display( ListADT list, int num ){
 /// @return The new list if the command is successful, NULL otherwise
 static ListADT get( Database database, ListADT list, char* args[], 
             int arguments ){
-    //TODO finish get by age and gpa(valid input checking)
     if( arguments < 2 ){
         printf( "get requires at least 1 additional parameter\n" );
         return NULL;
@@ -115,7 +114,7 @@ static ListADT get( Database database, ListADT list, char* args[],
             return database_getByFirstName( database, args[2] );
         } else {
             printf( "get firstname requires an additional parameter\n" );
-            return list;
+            return NULL;
         }
     } else if( strcmp( args[1], "lastname" ) == 0 ){
         if( arguments >= 3 ){
@@ -123,24 +122,38 @@ static ListADT get( Database database, ListADT list, char* args[],
             return database_getByLastName( database, args[2] );
         } else {
             printf( "get lastname requires an additional parameter\n" );
-            return list;
+            return NULL;
         }
     } else if( strcmp( args[1], "age" ) == 0 ){
         if( arguments >= 3 ){
            int age;
            if( sscanf( args[2], "%d", &age ) != 1 ){
                printf( "%s is not a valid number\n", args[2] );
-               return list;
+               return NULL;
            }
            if( list != NULL ) list_destroy( list );
            return database_getByAge( database, age );
         } else {
             printf( "get age requires an additional parameter\n" );
-            return list;
+            return NULL;
+        }
+    } else if( strcmp( args[1], "gpa" ) == 0 ){
+        if( arguments >= 4 ){
+            double low, high;
+            if( sscanf( args[2], "%lf", &low ) != 1 ||
+                sscanf( args[3], "%lf", &high ) != 1 ){
+                printf( "%s and/or %s are not valid decimal numbers\n", args[2], args[3] );
+                return NULL;
+            }
+            if( list != NULL ) list_destroy( list );
+            return database_getByGPA( database, low, high );
+        } else {
+            printf( "get gpa requires 2 additional parameters\n" );
+            return NULL;
         }
     } else {
         printf( "'%s' is not a subcommand of get\n", args[1] );
-        return list;
+        return NULL;
     }
 }
 
@@ -193,9 +206,10 @@ int main( int argv, char* argc[] ){
             database_force_exit( database );
             break;
         } else if( strcmp( args[0], "get" ) == 0 ){//'get'
-            list = get( database, list, args, arguments );
+            ListADT temp = get( database, list, args, arguments );
+            if( temp != NULL ) list = temp;
             num = 0;
-            if( list != NULL ){
+            if( temp != NULL ){
                 display( list, num );
             }
         } else if( strcmp( args[0], "next" ) == 0 ){//'next'
