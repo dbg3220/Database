@@ -88,9 +88,47 @@ static void display( ListADT list, int num ){
     }
 }
 
-static ListADT get( Database database, ListADT list ){
-    //TODO
-    return NULL;
+/// Handles the get command input by the user with additional arguments. If
+/// the command is successful the ListADT that is passed in is destroyed if
+/// it is not NULL. If the command is improperly formatted than the ListADT
+/// remains unchanged.
+///
+/// @param database - the database to get from
+/// @param list - the current list brought up by the user, may be NULL
+/// @param args - the arguments written by the user
+/// @param arguments - the amount of arguments given by the user
+/// @return The new list if the command is successful, NULL otherwise
+static ListADT get( Database database, ListADT list, char* args[], 
+            int arguments ){
+    //TODO finish get by age and gpa(valid input checking)
+    if( arguments < 2 ){
+        printf( "get requires at least 1 additional parameter\n" );
+        return NULL;
+    }
+
+    if( strcmp( args[1], "all" ) == 0 ){
+        if( list != NULL ) list_destroy( list );
+        return database_get( database );
+    } else if( strcmp( args[1], "firstname" ) == 0 ){
+        if( arguments >= 3 ){
+            if( list != NULL ) list_destroy( list );
+            return database_getByFirstName( database, args[2] );
+        } else {
+            printf( "get firstname requires an additional parameter\n" );
+            return NULL;
+        }
+    } else if( strcmp( args[1], "lastname" ) == 0 ){
+        if( arguments >= 3 ){
+            if( list != NULL ) list_destroy( list );
+            return database_getByLastName( database, args[2] );
+        } else {
+            printf( "get lastname requires an additional parameter\n" );
+            return NULL;
+        }
+    } else {
+        printf( "'%s' is not a subcommand of get\n", args[1] );
+        return NULL;
+    }
 }
 
 static ListADT add( Database database, ListADT list ){    
@@ -132,7 +170,6 @@ int main( int argv, char* argc[] ){
         input( BUFFER_SIZE, buffer );
         char* args[MAX_ARGS];
         int arguments = parse( buffer, args );
-        args[0] = "";//remove when implementing commands
 
         if( strcmp( args[0], "quit" ) == 0 ){//'quit'
             printf( "Saving database to file\n" );
@@ -143,7 +180,11 @@ int main( int argv, char* argc[] ){
             database_force_exit( database );
             break;
         } else if( strcmp( args[0], "get" ) == 0 ){//'get'
-            //TODO
+            list = get( database, list, args, arguments );
+            num = 0;
+            if( list != NULL ){
+                display( list, num );
+            }
         } else if( strcmp( args[0], "next" ) == 0 ){//'next'
             if( list != NULL ){
                 num += 10;
