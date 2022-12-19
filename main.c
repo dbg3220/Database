@@ -206,13 +206,24 @@ static void add( Database database, char* args[], int arguments ){
     free( str );
 }
 
-static ListADT update( Database database, ListADT list ){
+/// Handles the update command input by the user, has 5 additional parameters.
+/// If any of the arguments are improperly formatted or there aren't sufficient
+/// arguments than the command is not completed.
+///
+/// @param database - the database to update to
+/// @param args - the arguments written by the user
+/// @param arguments - the amount of arguments given by the user
+static ListADT update( Database database, char* args[], int arguments ){
     //TODO
     return NULL;
 }
 
 /// Handles the delete command input by the user, has only 1 additional
+<<<<<<< HEAD
 /// argument. If the command is successful the requested student is removed
+=======
+/// parameters. If the command is successful the requested student is removed
+>>>>>>> UPDATE
 /// from the database and from the ListADT passed in. If the command is
 /// improperly formatted than the database is not changed and the ListADT
 /// passed in is unchanged. If list is NULL than the command cannot be
