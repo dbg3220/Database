@@ -196,9 +196,8 @@ bool database_update( Database database, Student student ){
     if( index == -1 ){
         return false;
     }
-    Student s = (Student) list_get( database->students, index );
+    Student s = (Student) list_delete( database->students, index );
     free( s );
-    list_delete( database->students, index );
     list_add( database->students, (void *)student, index );
     return true;
 }
