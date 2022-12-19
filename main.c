@@ -71,7 +71,9 @@ static int parse( char buffer[], char* args[] ){
 /// an invalid index is given(i.e. < 0 or > list_size) then the first 10
 /// students are displayed. If there are not at least 10 students from index
 /// num to the end of the list than only however many students are from num to
-/// the end of the list are displayed.
+/// the end of the list are displayed. The indices of the students are
+/// displayed starting from 1 to the size of the list, but the parameter num
+/// is given assuming the students start at 0;
 ///
 /// @param list - the list to be analyzed
 /// @param num - the index of the first student to be displayed
@@ -83,7 +85,7 @@ static void display( ListADT list, int num ){
     for( int i = num; i < num + 10 && i < size; i++ ){
         Student s = (Student) list_get( list, i );
         char* str = student_toString( s );
-        printf( "%d. %s\n", i, str );
+        printf( "%d. %s\n", i + 1, str );
         free( str );
     }
 }
@@ -167,9 +169,40 @@ static ListADT update( Database database, ListADT list ){
     return NULL;
 }
 
-static ListADT delete( Database database, ListADT list ){
-    //TODO
-    return NULL;
+/// Handles the delete command input by the user, has only 1 additional
+/// parameter. If the command is successful the requested student is removed
+/// from the database and from the ListADT passed in. If the command is
+/// improperly formatted than the database is not changed and the ListADT
+/// passed in is unchanged. If list is NULL than the command cannot be
+/// performed and again nothing is changed.
+///
+/// @param database - the database to delete from
+/// @param list - the current list brought up by the user, may be NULL
+/// @param args - the arguments written by the user
+/// @param arguments - the amount of arguments given by the user
+static void delete( Database database, ListADT list, char* args[],
+            int arguments ){
+    if( list == NULL ){
+        printf( "you must bring up a list of students to delete\n" );
+        return;
+    }
+    if( arguments < 2 ){
+        printf( "delete requires 1 additional parameter\n" );
+        return;
+    }
+    int number;
+    if( sscanf( args[1], "%d", &number ) == 1 ){
+        if( number < 1 || number > list_size( list ) ){
+            printf( "%d is not within the bounds of the list you brought up\n",
+                    number );
+            return;
+        }
+        Student student = (Student) list_delete( list, number - 1 );
+        char* email = student_getEmail( student );
+        database_delete( database, email );
+    } else {
+        printf( "%s is not a number\n", args[1] );
+    }
 }
 
 /// @brief main function of this program
@@ -232,7 +265,7 @@ int main( int argv, char* argc[] ){
         } else if( strcmp( args[0], "update" ) == 0 ){//'update'
             //TODO
         } else if( strcmp( args[0], "delete" ) == 0 ){//'delete'
-            //TODO
+            delete( database, list, args, arguments );
         } else if( strcmp( args[0], "help" ) == 0 ){//'help'
             printf( "%s\n", COMMANDS );
         } else {//'default'
