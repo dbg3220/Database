@@ -219,11 +219,7 @@ static ListADT update( Database database, char* args[], int arguments ){
 }
 
 /// Handles the delete command input by the user, has only 1 additional
-<<<<<<< HEAD
-/// argument. If the command is successful the requested student is removed
-=======
-/// parameters. If the command is successful the requested student is removed
->>>>>>> UPDATE
+/// parameter. If the command is successful the requested student is removed
 /// from the database and from the ListADT passed in. If the command is
 /// improperly formatted than the database is not changed and the ListADT
 /// passed in is unchanged. If list is NULL than the command cannot be
