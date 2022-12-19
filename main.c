@@ -91,7 +91,7 @@ static void display( ListADT list, int num ){
 /// Handles the get command input by the user with additional arguments. If
 /// the command is successful the ListADT that is passed in is destroyed if
 /// it is not NULL. If the command is improperly formatted than the ListADT
-/// remains unchanged.
+/// remains unchanged and is returned.
 ///
 /// @param database - the database to get from
 /// @param list - the current list brought up by the user, may be NULL
@@ -115,7 +115,7 @@ static ListADT get( Database database, ListADT list, char* args[],
             return database_getByFirstName( database, args[2] );
         } else {
             printf( "get firstname requires an additional parameter\n" );
-            return NULL;
+            return list;
         }
     } else if( strcmp( args[1], "lastname" ) == 0 ){
         if( arguments >= 3 ){
@@ -123,24 +123,24 @@ static ListADT get( Database database, ListADT list, char* args[],
             return database_getByLastName( database, args[2] );
         } else {
             printf( "get lastname requires an additional parameter\n" );
-            return NULL;
+            return list;
         }
     } else if( strcmp( args[1], "age" ) == 0 ){
         if( arguments >= 3 ){
            int age;
            if( sscanf( args[2], "%d", &age ) != 1 ){
-               printf( "%s is not a valid number\n" );
-               return NULL;
+               printf( "%s is not a valid number\n", args[2] );
+               return list;
            }
            if( list != NULL ) list_destroy( list );
            return database_getByAge( database, age );
         } else {
             printf( "get age requires an additional parameter\n" );
-            return NULL;
+            return list;
         }
     } else {
         printf( "'%s' is not a subcommand of get\n", args[1] );
-        return NULL;
+        return list;
     }
 }
 
