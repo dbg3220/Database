@@ -125,6 +125,19 @@ static ListADT get( Database database, ListADT list, char* args[],
             printf( "get lastname requires an additional parameter\n" );
             return NULL;
         }
+    } else if( strcmp( args[1], "age" ) == 0 ){
+        if( arguments >= 3 ){
+           int age;
+           if( sscanf( args[2], "%d", &age ) != 1 ){
+               printf( "%s is not a valid number\n" );
+               return NULL;
+           }
+           if( list != NULL ) list_destroy( list );
+           return database_getByAge( database, age );
+        } else {
+            printf( "get age requires an additional parameter\n" );
+            return NULL;
+        }
     } else {
         printf( "'%s' is not a subcommand of get\n", args[1] );
         return NULL;
