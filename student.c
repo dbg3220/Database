@@ -2,6 +2,8 @@
 // File: student.c
 // Description: Source module for implementing functions described in student.h
 //
+// @author Damon Gonzalez
+//
 
 #include <stdlib.h>
 #include <stdio.h>

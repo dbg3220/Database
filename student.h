@@ -3,6 +3,8 @@
 // Description: header file for automating the creation, editing, and deletion
 // of student objects from memory
 //
+// @author Damon Gonzalez
+//
 
 #include <stdbool.h>
 

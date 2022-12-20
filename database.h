@@ -6,6 +6,8 @@
 // Note: all get methods in this file return a ListADT which must be destroyed
 // by the client
 //
+// @author Damon Gonzalez
+//
 
 #include <stdbool.h>
 
