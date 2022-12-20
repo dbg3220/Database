@@ -174,8 +174,8 @@ static ListADT get( Database database, ListADT list, char* args[],
 /// @param arguments - the amount of arguments given by the user
 static void add( Database database, char* args[], int arguments ){    
     if( arguments < 6 ){
-        printf( "add requires 5 additional parameter, i.e. get <firstname>"\
-                "<lastname> <email> <age> <gpa>\n" );
+        printf( "add requires 5 additional parameter, i.e. add "\
+                "<firstname> <lastname> <email> <age> <gpa>\n" );
         return;
     }
 
@@ -207,15 +207,43 @@ static void add( Database database, char* args[], int arguments ){
 }
 
 /// Handles the update command input by the user, has 5 additional parameters.
-/// If any of the arguments are improperly formatted or there aren't sufficient
+/// If any of the parameters are improperly formatted or there aren't sufficient
 /// arguments than the command is not completed.
 ///
 /// @param database - the database to update to
 /// @param args - the arguments written by the user
 /// @param arguments - the amount of arguments given by the user
-static ListADT update( Database database, char* args[], int arguments ){
-    //TODO
-    return NULL;
+static void update( Database database, char* args[], int arguments ){
+    if( arguments < 6 ){
+        printf( "update requires 5 additional parameter, i.e. update "\
+                "<firstname> <lastname> <email> <age> <gpa>\n" );
+        return;
+    }
+
+    int age;
+    double gpa;
+    if( sscanf( args[4], "%d", &age ) != 1 ){
+        printf( "%s is not a valid number\n", args[4] );
+        return;
+    }
+    if( sscanf( args[5], "%lf", &gpa ) != 1 ){
+        printf( "%s is not a valid decimal number\n", args[5] );
+        return;
+    }
+    
+    Student student = student_create( args[1], args[2], args[3], age, gpa );
+    if( !student ){
+        printf( "one of your student descriptors is invalid\n" );
+        return;
+    }
+    if( !database_update( database, student ) ){
+        printf( "no student with that email has been found\n" );
+        return;
+    }
+
+    char* str = student_toString( (void*) student );
+    printf( "%s has been successfully updated in the database\n", str );
+    free( str );
 }
 
 /// Handles the delete command input by the user, has only 1 additional
@@ -312,7 +340,7 @@ int main( int argv, char* argc[] ){
         } else if( strcmp( args[0], "add" ) == 0 ){//'add'
             add( database, args, arguments );
         } else if( strcmp( args[0], "update" ) == 0 ){//'update'
-            //TODO
+            update( database, args, arguments );
         } else if( strcmp( args[0], "delete" ) == 0 ){//'delete'
             delete( database, list, args, arguments );
         } else if( strcmp( args[0], "help" ) == 0 ){//'help'
