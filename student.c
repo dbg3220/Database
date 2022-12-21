@@ -1,6 +1,5 @@
 //
-// File: student.c
-// Description: Source module for implementing functions described in student.h
+//  Source module for implementing functions described in student.h
 //
 // @author Damon Gonzalez
 //
@@ -27,7 +26,8 @@ typedef struct Student_H {
 #define _SOURCE_
 #include "student.h"
 
-Student student_create( char* firstName, char* lastName, char* email, int age, double gpa ){
+Student student_create( char* firstName, char* lastName, char* email, int age, 
+                            double gpa ){
     if( strlen( firstName ) > MAX_NAME_LENGTH ||
         strlen( lastName ) > MAX_NAME_LENGTH ||
         strlen( email ) > MAX_EMAIL_LENGTH ||
