@@ -1,6 +1,7 @@
 //
-// File: database.c
-// Description: Module to implement function headers described in database.h
+// Module to implement function headers described in database.h
+//
+// @author Damon Gonzalez
 //
 
 #include <stdio.h>
@@ -29,7 +30,7 @@ static int load( Database database ){
     char line[200];
     while ( fgets( line, 200, file ) != NULL ){
         if( line[ strlen( line ) - 1 ] == '\n' ){
-            line[ strlen( line ) - 1 ] = '\0';//trims the final character if it is a newline character
+            line[ strlen( line ) - 1 ] = '\0';
         }
         char* firstName = strtok( line, "," );
         char* lastName = strtok( NULL, "," );
@@ -43,7 +44,8 @@ static int load( Database database ){
     return 1;
 }
 
-/// Saves the database to the file originally specified
+/// Writes all students in database->students to the file originally specified
+/// in the constructor.
 ///
 /// @param database - the database to be saved
 static void save( Database database ){
@@ -56,7 +58,8 @@ static void save( Database database ){
         char* email = student_getEmail( s );
         int age = student_getAge( s );
         double gpa = student_getGPA( s );
-        fprintf( output, "%s,%s,%s,%d,%.2f\n", firstName, lastName, email, age, gpa );
+        fprintf( output, "%s,%s,%s,%d,%.2f\n", firstName, lastName, email, age,
+                    gpa );
     }
     fclose( output );
 }
@@ -65,7 +68,7 @@ static void save( Database database ){
 /// email.
 ///
 /// @param database - the database to be analyzed
-/// @param email The email to match against
+/// @param email - the email to match against
 /// @return The index of the student, -1 if no student found
 static int indexOf( Database database, char* email ){
     int length = list_size( database->students );

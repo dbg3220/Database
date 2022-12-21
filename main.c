@@ -1,3 +1,4 @@
+//
 // Main module of this program that will interpret user input and run the
 // relevant commands described in database.h using objects described in
 // student.h
@@ -15,17 +16,52 @@
 #define USAGE               "Usage: ./main <database_file>"
 #define MAX_ARGS            6
 #define BUFFER_SIZE         50
-#define ERROR_NOT_FOUND     "Command Not Found, type 'help' to see a list of relevant commands"
-#define ERROR_USE_GET       "You must use get to bring up a list of students to modify"
+#define ERROR_NOT_FOUND     "Command Not Found, type 'help' to see a list of"\
+                            " relevant commands"
+#define ERROR_USE_GET       "You must use get to bring up a list of students "\
+                            " to modify"
 #define COMMANDS            "'quit': Ends the program and saves all changes\n"\
-                            "'fquit': Ends the program without saving changes\n"\
-                            "'get': Retrieves students from the database. You can get all or search by firstname, lastname, age, or gpa\n"\
+                            "'fquit': Ends the program without saving"\
+                            " changes\n"\
+                            "'get': Retrieves students from the database. You"\
+                            " can get all or search by firstname, lastname,"\
+                            " age, or gpa\n"\
                             "'next': Displays the next 10 students\n"\
-                            "'clear': Clears the current students from usage\n"\
+                            "'clear': Clears the current students from\n"\
                             "'add': Adds a new student to the database\n"\
                             "'update': Updates a selected student\n"\
                             "'delete': Deletes a selected student\n"\
                             "'help: Shows a list of helpful commands"
+#define HELP_QUIT           "Usage: quit (saves changes to the database)"
+#define HELP_FQUIT          "Usage: fquit (closes without saving changes to"\
+                            " the database)"
+#define HELP_GET            "Usage: get all (retrieves all students in the"\
+                            " database)\n"\
+                            "get firstname <student_firstname> (retrieves all"\
+                            " students with the firstname)\n"\
+                            "get lastname <student_lastname> (retrieves all"\
+                            " students with the lastname)\n"\
+                            "get age <student_age> (retrieves all students"\
+                            " with the given age)\n"\
+                            "get gpa <low_bound> <high_bound> (retrieves all"\
+                            " students with a gpa within the given bounds)"
+#define HELP_NEXT           "Usage: next (shows the next 10 students"\
+                            " retrieved by a get, if there are any)\n"
+#define HELP_CLEAR          "Usage: clear (clears the list of students"\
+                            " retrieved by a get)"
+#define HELP_ADD            "Usage: add <firstname> <lastname> <email> <age>"\
+                            " <gpa> (adds a student to the database with the"\
+                            " given attributes)"
+#define HELP_UPDATE         "Usage: update <firstname> <lastname> <email>"\
+                            " <age> <gpa> (updates a student in the database"\
+                            " using the email as a unique identifier)"
+#define HELP_DELETE         "Usage: delete <list_number> (removes a student"\
+                            " from the database by referencing a number of a"\
+                            " student that is retrieved by a get)"
+#define HELP_HELP           "Usage: help (shows a full list of relevant"\
+                            " commands for this database)\n"\
+                            "help <command_name> (shows a more comprehensive"\
+                            " usage message for each command)"
 #define PROMPT              "-> "
 
 /// Reads user input. Ignores all white space and terminates when a newline
@@ -149,7 +185,8 @@ static ListADT get( Database database, ListADT list, char* args[],
             double low, high;
             if( sscanf( args[2], "%lf", &low ) != 1 ||
                 sscanf( args[3], "%lf", &high ) != 1 ){
-                printf( "%s and/or %s are not valid decimal numbers\n", args[2], args[3] );
+                printf( "%s and/or %s are not valid decimal numbers\n", args[2],
+                        args[3] );
                 return NULL;
             }
             if( list != NULL ) list_destroy( list );
@@ -282,6 +319,40 @@ static void delete( Database database, ListADT list, char* args[],
     }
 }
 
+/// Handles the help command input by the user, may have 1 additional argument.
+/// If only help is typed a full list of commands is shown, if help <command>
+/// is typed a page is printed showing relevant text on using that command.
+///
+/// @param args - the arguments written by the user
+/// @param arguments - the amount of arguments given by the user
+static void help( char* args[], int arguments ){
+    if( arguments == 1 ){
+        printf( "%s\n", COMMANDS );
+    } else {
+        if( strcmp( args[1], "quit" ) == 0 ){
+            printf( "%s\n", HELP_QUIT );
+        } else if( strcmp( args[1], "fquit" ) == 0 ){
+            printf( "%s\n", HELP_FQUIT );
+        } else if( strcmp( args[1], "get" ) == 0 ){
+            printf( "%s\n", HELP_GET );
+        } else if( strcmp( args[1], "next" ) == 0 ){
+            printf( "%s\n", HELP_NEXT );
+        } else if( strcmp( args[1], "clear" ) == 0 ){
+            printf( "%s\n", HELP_CLEAR );
+        } else if( strcmp( args[1], "add" ) == 0 ){
+            printf( "%s\n", HELP_ADD );
+        } else if( strcmp( args[1], "update" ) == 0 ){
+            printf( "%s\n", HELP_UPDATE );
+        } else if( strcmp( args[1], "delete" ) == 0 ){
+            printf( "%s\n", HELP_DELETE );
+        } else if( strcmp( args[1], "help" ) == 0 ){
+            printf( "%s\n", HELP_HELP );
+        } else {
+            printf( "%s\n", ERROR_NOT_FOUND );
+        }
+    }
+}
+
 /// @brief main function of this program
 /// @return EXIT_SUCCESS upon successful completion of this program,
 /// EXIT_FAILURE otherwise
@@ -344,13 +415,13 @@ int main( int argv, char* argc[] ){
         } else if( strcmp( args[0], "delete" ) == 0 ){//'delete'
             delete( database, list, args, arguments );
         } else if( strcmp( args[0], "help" ) == 0 ){//'help'
-            printf( "%s\n", COMMANDS );
+            help( args, arguments );
         } else {//'default'
             printf( "%s\n", ERROR_NOT_FOUND );
         }
     }
 
-    if( list != NULL ){//if list wasn't cleared before quit/fquit
+    if( list != NULL ){
         list_destroy( list );
     }
 

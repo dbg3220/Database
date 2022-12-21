@@ -1,6 +1,6 @@
-# Database Project: A student database for school administrators
+# Database Project: A modular database of students
 
-A database built entirely from scratch in C
+Implemented purely in C
 
 ## Author: Damon Gonzalez
 
@@ -10,9 +10,10 @@ A database built entirely from scratch in C
 
 1. Clone the repository
 2. execute ./comp.sh
-3. execute ./main <filename>.csv
+3. execute ./main <filename>
 
 ## Notes
 	-The data in data.csv is organized in the likeness of 'firstname,lastname,email,age,gpa'
 	-Dependencies for this project are located in the dep directory
+    -The gpa of any student is restricted to 2 decimal places
 
