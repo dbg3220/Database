@@ -5,3 +5,6 @@ main.o
 test.o
 main
 test
+
+#Project Config files
+.*
