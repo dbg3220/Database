@@ -1,10 +1,9 @@
-#C compilation output
-student.o
-database.o
-main.o
-test.o
+# C compilation output
+*.o
+
+# Linked executables
 main
 test
 
-#Project Config files
-.*
+# Data files for saving
+data/*
